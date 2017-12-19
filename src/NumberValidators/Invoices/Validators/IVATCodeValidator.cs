@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NumberValidators.Invoices.Validators
 {
+    /// <summary>
+    /// 增值税发票代码验证接口
+    /// </summary>
     public interface IVATCodeValidator : IValidator<VATCodeValidationResult>
     {
         /// <summary>

@@ -25,8 +25,22 @@ namespace NumberValidators.Invoices.Validators
             {"06",VATKind.Roll},
             {"07",VATKind.Roll},
         };
+        /// <summary>
+        /// 支持的增值税发票类型
+        /// </summary>
         protected override IEnumerable<VATKind> SupportKind => new VATKind[] { VATKind.Electronic, VATKind.Roll };
+        /// <summary>
+        /// 验证用的正则
+        /// </summary>
         protected override string RegexPattern => @"^0\d{11}$";
+        /// <summary>
+        /// 生成增值税发票代码
+        /// </summary>
+        /// <param name="areaNumber"></param>
+        /// <param name="year"></param>
+        /// <param name="batch"></param>
+        /// <param name="kind"></param>
+        /// <returns></returns>
         protected override string GenerateVATCode(string areaNumber, string year, ushort batch, VATKind kind)
         {
             var query = _kindDic.Where(kv => kv.Value == kind);
@@ -37,14 +51,31 @@ namespace NumberValidators.Invoices.Validators
             var rdKind = query.OrderBy(g => Guid.NewGuid()).First().Key;
             return string.Format("0{0}{1}{2}{3}", areaNumber, year, (batch % 1000).ToString().PadLeft(3, '0'), rdKind);
         }
+        /// <summary>
+        /// 获取年份
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <returns></returns>
         protected override int GetYear(string vatCode)
         {
             return int.Parse(vatCode.Substring(5, 2)) + 2000;
         }
+        /// <summary>
+        /// 获取行政区划
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <returns></returns>
         protected override int GetAreaNumber(string vatCode)
         {
             return int.Parse(vatCode.Substring(1, 4));
         }
+        /// <summary>
+        /// 验证类型是否符合
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <param name="kind"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         protected override bool ValidVATKind(string vatCode, VATKind? kind, VATCodeValidationResult result)
         {
             var key = vatCode.Substring(10, 2);
@@ -59,6 +90,11 @@ namespace NumberValidators.Invoices.Validators
             }
             return valid;
         }
+        /// <summary>
+        /// 获取批次
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <returns></returns>
         protected override int GetBatch(string vatCode)
         {
             return int.Parse(vatCode.Substring(7, 3));

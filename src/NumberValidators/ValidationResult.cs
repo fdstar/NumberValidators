@@ -10,6 +10,9 @@ namespace NumberValidators
     /// </summary>
     public class ValidationResult
     {
+        /// <summary>
+        /// 号码验证结果构造函数
+        /// </summary>
         public ValidationResult()
         {
             this.Errors = new List<string>();

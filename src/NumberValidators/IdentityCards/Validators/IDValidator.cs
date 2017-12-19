@@ -7,16 +7,35 @@ using System.Text;
 
 namespace NumberValidators.IdentityCards.Validators
 {
+    /// <summary>
+    /// 身份证验证模板基类
+    /// </summary>
     public abstract class IDValidator : BaseValidatorWithDictionary<IDValidationResult, int, string>, IIDValidator
     {
         #region props
+        /// <summary>
+        /// 默认数据字典类
+        /// </summary>
         protected override IValidationDictionary<int, string> DefaultDictionary => GBT2260_2013.Singleton;
+        /// <summary>
+        /// 身份证长度
+        /// </summary>
         public abstract IDLength IDLength { get; }
+        /// <summary>
+        /// 空提示
+        /// </summary>
         protected override string EmptyErrorMessage => ErrorMessage.Empty;
+        /// <summary>
+        /// 正则验证失败提示
+        /// </summary>
         protected override string RegexMatchFailMessage => ErrorMessage.Error;
         #endregion
 
         #region interface
+        /// <summary>
+        /// 生成随机的身份证号码
+        /// </summary>
+        /// <returns></returns>
         public override string GenerateRandomNumber()
         {
             var areaNumber = this.Dictionary.GetDictionary().Keys.OrderBy(g => Guid.NewGuid()).FirstOrDefault(i => i > 10000 && i < 1000000);
@@ -32,6 +51,13 @@ namespace NumberValidators.IdentityCards.Validators
             var sequenceNumber = RandomHelper.GetRandomNumber(1000);
             return this.GenerateID(areaNumber, new DateTime(year, month, day), sequenceNumber);
         }
+        /// <summary>
+        /// 生成身份证号码
+        /// </summary>
+        /// <param name="areaNumber"></param>
+        /// <param name="birthDay"></param>
+        /// <param name="sequenceNumber"></param>
+        /// <returns></returns>
         public virtual string GenerateID(int areaNumber, DateTime birthDay, int sequenceNumber)
         {
             if (areaNumber < 10 || areaNumber > 999999 || sequenceNumber < 0 || sequenceNumber > 999)
@@ -40,12 +66,31 @@ namespace NumberValidators.IdentityCards.Validators
             }
             return this.GenerateID(areaNumber.ToString().PadRight(6, '0'), birthDay, sequenceNumber.ToString().PadLeft(3, '0'));
         }
+        /// <summary>
+        /// 生成身份证号码
+        /// </summary>
+        /// <param name="areaNumber"></param>
+        /// <param name="birthDay"></param>
+        /// <param name="sequenceNumber"></param>
+        /// <returns></returns>
         protected abstract string GenerateID(string areaNumber, DateTime birthDay, string sequenceNumber);
+        /// <summary>
+        /// 身份证验证
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public override IDValidationResult Validate(string number)
         {
             return this.Validate(number, ushort.MinValue);
         }
-
+        /// <summary>
+        /// 验证身份证是否正确
+        /// </summary>
+        /// <param name="idNumber">待验证的证件号码</param>
+        /// <param name="minYear">允许最小年份，默认0</param>
+        /// <param name="validLimit">验证区域级别，默认AreaValidLimit.Province</param>
+        /// <param name="ignoreCheckBit">是否忽略校验位验证，默认false</param>
+        /// <returns>验证结果</returns>
         public IDValidationResult Validate(string idNumber, ushort minYear = 0, AreaValidLimit validLimit = AreaValidLimit.Province, bool ignoreCheckBit = false)
         {
             var result = base.Validate(idNumber);
@@ -84,6 +129,13 @@ namespace NumberValidators.IdentityCards.Validators
         /// <param name="idNumber"></param>
         /// <returns></returns>
         protected abstract DateTime GetBirthday(string idNumber);
+        /// <summary>
+        /// 验证行政区划
+        /// </summary>
+        /// <param name="idNumber"></param>
+        /// <param name="validLimit"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         protected virtual bool ValidArea(string idNumber, AreaValidLimit validLimit, IDValidationResult result)
         {
             int areaNumber = this.GetAreaNumber(idNumber);
@@ -162,6 +214,12 @@ namespace NumberValidators.IdentityCards.Validators
         /// <param name="idNumber"></param>
         /// <returns></returns>
         internal protected abstract bool IsCheckBitRight(string idNumber, out char rightBit);
+        /// <summary>
+        /// 验证并填充其它信息
+        /// </summary>
+        /// <param name="idNumber"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         protected virtual bool ValidOtherInfo(string idNumber, IDValidationResult result)
         {
             int sequence = int.Parse(this.GetSequenceNumber(idNumber));

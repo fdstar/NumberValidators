@@ -10,6 +10,11 @@ namespace NumberValidators.IdentityCards
     /// </summary>
     public class Area
     {
+        /// <summary>
+        /// 行政区划构造函数
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="name"></param>
         public Area(int number, string name)
         {
             if (string.IsNullOrWhiteSpace(name)

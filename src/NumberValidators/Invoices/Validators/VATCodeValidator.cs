@@ -6,16 +6,35 @@ using System.Text;
 
 namespace NumberValidators.Invoices.Validators
 {
+    /// <summary>
+    /// 增值税发票验证类
+    /// </summary>
     public abstract class VATCodeValidator : BaseValidatorWithDictionary<VATCodeValidationResult, int, string>, IVATCodeValidator
     {
         #region props
+        /// <summary>
+        /// 默认基础数据字典
+        /// </summary>
         protected override IValidationDictionary<int, string> DefaultDictionary => GBT2260OnlyProvince.Singleton;
+        /// <summary>
+        /// 支持的增值税发票类型
+        /// </summary>
         protected abstract IEnumerable<VATKind> SupportKind { get; }
+        /// <summary>
+        /// 空错误提示
+        /// </summary>
         protected override string EmptyErrorMessage => ErrorMessage.Empty;
+        /// <summary>
+        /// 正则验证失败错误提示
+        /// </summary>
         protected override string RegexMatchFailMessage => ErrorMessage.Error;
         #endregion
 
         #region interface
+        /// <summary>
+        /// 生成随机发票代码
+        /// </summary>
+        /// <returns></returns>
         public override string GenerateRandomNumber()
         {
             var areaNumber = this.Dictionary.GetDictionary().Keys.OrderBy(g => Guid.NewGuid()).FirstOrDefault(i => i >= 10 && i < 10000);
@@ -28,6 +47,14 @@ namespace NumberValidators.Invoices.Validators
             var batch = RandomHelper.GetRandomNumber(1000);
             return this.GenerateVATCode(areaNumber, (ushort)year, (ushort)batch, SupportKind.OrderBy(g => Guid.NewGuid()).First());
         }
+        /// <summary>
+        /// 按输入生成发票代码
+        /// </summary>
+        /// <param name="areaNumber">行政区划代码</param>
+        /// <param name="year">发票年份</param>
+        /// <param name="batch">批次</param>
+        /// <param name="kind">发票类型</param>
+        /// <returns></returns>
         public virtual string GenerateVATCode(int areaNumber, ushort year, ushort batch, VATKind kind)
         {
             if (areaNumber < 10 || areaNumber > 9999)
@@ -36,13 +63,31 @@ namespace NumberValidators.Invoices.Validators
             }
             return this.GenerateVATCode(areaNumber.ToString().PadRight(4, '0'), (year % 100).ToString().PadLeft(2, '0'), batch, kind);
         }
+        /// <summary>
+        /// 按输入生成发票代码
+        /// </summary>
+        /// <param name="areaNumber"></param>
+        /// <param name="year"></param>
+        /// <param name="batch"></param>
+        /// <param name="kind"></param>
+        /// <returns></returns>
         protected abstract string GenerateVATCode(string areaNumber, string year, ushort batch, VATKind kind);
-
+        /// <summary>
+        /// 验证发票代码是否正确
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public override VATCodeValidationResult Validate(string number)
         {
             return this.Validate(number, minYear: 2012);
         }
-
+        /// <summary>
+        /// 验证发票代码是否正确
+        /// </summary>
+        /// <param name="vatCode">发票代码</param>
+        /// <param name="kind">发票类型</param>
+        /// <param name="minYear">最小年份</param>
+        /// <returns></returns>
         public VATCodeValidationResult Validate(string vatCode, VATKind? kind = null, ushort minYear = 2012)
         {
             var result = base.Validate(vatCode);
@@ -103,6 +148,12 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="result"></param>
         /// <returns></returns>
         protected abstract bool ValidVATKind(string vatCode, VATKind? kind, VATCodeValidationResult result);
+        /// <summary>
+        /// 验证填充额外信息
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         protected virtual bool ValidOtherInfo(string vatCode, VATCodeValidationResult result)
         {
             result.Batch = this.GetBatch(vatCode);

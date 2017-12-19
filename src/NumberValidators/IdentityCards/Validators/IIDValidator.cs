@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NumberValidators.IdentityCards.Validators
 {
+    /// <summary>
+    /// 身份证验证接口
+    /// </summary>
     public interface IIDValidator : IValidator<IDValidationResult>
     {
         /// <summary>

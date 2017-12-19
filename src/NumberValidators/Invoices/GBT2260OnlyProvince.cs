@@ -5,9 +5,15 @@ using System.Text;
 
 namespace NumberValidators.Invoices
 {
+    /// <summary>
+    /// 仅包含省、直辖市以及自治区的行政区划代码
+    /// </summary>
     public class GBT2260OnlyProvince : IValidationDictionary<int, string>
     {
         private GBT2260OnlyProvince() { }
+        /// <summary>
+        /// 单例
+        /// </summary>
         public static readonly GBT2260OnlyProvince Singleton = new GBT2260OnlyProvince();
 
         static readonly Dictionary<int, string> Dictionary = new Dictionary<int, string>
@@ -49,6 +55,10 @@ namespace NumberValidators.Invoices
             { 8200,"澳门特别行政区"},
             #endregion
         };
+        /// <summary>
+        /// 获取字典
+        /// </summary>
+        /// <returns></returns>
         public IDictionary<int, string> GetDictionary()
         {
             return Dictionary;

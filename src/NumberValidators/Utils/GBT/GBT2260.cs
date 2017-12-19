@@ -11,6 +11,10 @@ namespace NumberValidators.Utils.GBT
     /// </summary>
     public abstract class GBT2260 : IValidationDictionary<int, string>
     {
+        /// <summary>
+        /// 获取数据字典
+        /// </summary>
+        /// <returns></returns>
         public abstract IDictionary<int, string> GetDictionary();
     }
 }

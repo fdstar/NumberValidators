@@ -11,8 +11,13 @@ namespace NumberValidators.Utils.GBT
     public class GBT2260_2013 : GBT2260
     {
         private GBT2260_2013() { }
+        /// <summary>
+        /// 单例
+        /// </summary>
         public static readonly GBT2260_2013 Singleton = new GBT2260_2013();
-
+        /// <summary>
+        /// 基础数据字典
+        /// </summary>
         static readonly Dictionary<int, string> Dictionary = new Dictionary<int, string>
         {
             #region 区域代码
@@ -397,6 +402,10 @@ namespace NumberValidators.Utils.GBT
             { 82,"澳门特别行政区"},
             #endregion
         };
+        /// <summary>
+        /// 获取数据字典
+        /// </summary>
+        /// <returns></returns>
         public override IDictionary<int, string> GetDictionary()
         {
             return Dictionary;

@@ -25,8 +25,16 @@ namespace NumberValidators
         /// 正则匹配失败时的错误信息
         /// </summary>
         protected virtual string RegexMatchFailMessage { get; } = "号码错误";
+        /// <summary>
+        /// 生成随机号码
+        /// </summary>
+        /// <returns></returns>
         public abstract string GenerateRandomNumber();
-
+        /// <summary>
+        /// 验证号码是否正确
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public virtual T Validate(string number)
         {
             var valid = ValidationResult.ValidEmpty(number, out T result, EmptyErrorMessage)

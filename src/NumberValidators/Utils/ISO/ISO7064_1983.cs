@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NumberValidators.Utils.ISO
 {
+    /// <summary>
+    /// ISO7064_1983
+    /// </summary>
     public class ISO7064_1983
     {
         /// <summary>

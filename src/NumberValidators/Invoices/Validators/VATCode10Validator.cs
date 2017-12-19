@@ -31,9 +31,22 @@ namespace NumberValidators.Invoices.Validators
             {VATKind.Special ,3},
             {VATKind.Transport ,3},
         };
+        /// <summary>
+        /// 支持的增值税发票类型
+        /// </summary>
         protected override IEnumerable<VATKind> SupportKind => _duplicateDic.Keys;
+        /// <summary>
+        /// 验证用的正则
+        /// </summary>
         protected override string RegexPattern => @"^\d{8}[2-9][0-4]$";
-
+        /// <summary>
+        /// 生成增值税发票代码
+        /// </summary>
+        /// <param name="areaNumber"></param>
+        /// <param name="year"></param>
+        /// <param name="batch"></param>
+        /// <param name="kind"></param>
+        /// <returns></returns>
         protected override string GenerateVATCode(string areaNumber, string year, ushort batch, VATKind kind)
         {
             var query = _kindDic.Where(kv => kv.Value == kind);
@@ -44,14 +57,31 @@ namespace NumberValidators.Invoices.Validators
             var rdKind = query.First().Key;
             return string.Format("{0}{1}{2}{3}{4}0", areaNumber, year, (batch % 10).ToString(), rdKind, _duplicateDic[kind]);
         }
+        /// <summary>
+        /// 获取年份
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <returns></returns>
         protected override int GetYear(string vatCode)
         {
             return int.Parse(vatCode.Substring(4, 2)) + 2000;
         }
+        /// <summary>
+        /// 获取行政区划
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <returns></returns>
         protected override int GetAreaNumber(string vatCode)
         {
             return int.Parse(vatCode.Substring(0, 4));
         }
+        /// <summary>
+        /// 验证类型是否符合
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <param name="kind"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         protected override bool ValidVATKind(string vatCode, VATKind? kind, VATCodeValidationResult result)
         {
             var valid = _kindDic.ContainsKey(vatCode[7]) && (!kind.HasValue || kind.Value == _kindDic[vatCode[7]]);
@@ -65,12 +95,23 @@ namespace NumberValidators.Invoices.Validators
             }
             return valid;
         }
+        /// <summary>
+        /// 验证填充额外信息
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         protected override bool ValidOtherInfo(string vatCode, VATCodeValidationResult result)
         {
             result.DuplicateNumber = int.Parse(vatCode.Substring(8, 1));
             result.AmountVersion = (AmountVersion)int.Parse(vatCode.Substring(9, 1));
             return base.ValidOtherInfo(vatCode, result);
         }
+        /// <summary>
+        /// 获取批次
+        /// </summary>
+        /// <param name="vatCode"></param>
+        /// <returns></returns>
         protected override int GetBatch(string vatCode)
         {
             return int.Parse(vatCode.Substring(7, 1));

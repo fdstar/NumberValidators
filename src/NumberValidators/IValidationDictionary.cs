@@ -5,6 +5,11 @@ using System.Text;
 
 namespace NumberValidators
 {
+    /// <summary>
+    /// 验证用的基础数据字典接口
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     public interface IValidationDictionary<TKey, TValue>
     {
         /// <summary>

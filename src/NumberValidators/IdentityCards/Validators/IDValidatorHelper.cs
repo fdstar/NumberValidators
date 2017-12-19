@@ -6,6 +6,9 @@ using System.Text;
 
 namespace NumberValidators.IdentityCards.Validators
 {
+    /// <summary>
+    /// 身份证验证帮助类
+    /// </summary>
     public static class IDValidatorHelper
     {
         /// <summary>
@@ -43,16 +46,11 @@ namespace NumberValidators.IdentityCards.Validators
         }
         private static bool ValidImplement(string idNumber, IDValidationResult result, out IIDValidator validator)
         {
-            validator = null;
-            var type = ReflectionHelper.FindByInterface(typeof(IIDValidator), string.Format("ID{0}Validator", idNumber.Length));
-            var valid = type != null;
+            validator = ReflectionHelper.FindByInterface<IIDValidator>(string.Format("ID{0}Validator", idNumber.Length));
+            var valid = validator != null;
             if (!valid)
             {
                 result.AddErrorMessage(ErrorMessage.InvalidImplement, idNumber.Length);
-            }
-            else
-            {
-                validator = (IIDValidator)type.Assembly.CreateInstance(type.FullName);
             }
             return valid;
         }
