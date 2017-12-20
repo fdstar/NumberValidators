@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NumberValidators.IdentityCards
+namespace NumberValidators
 {
     /// <summary>
     /// 行政区划
@@ -17,8 +17,7 @@ namespace NumberValidators.IdentityCards
         /// <param name="name"></param>
         public Area(int number, string name)
         {
-            if (string.IsNullOrWhiteSpace(name)
-                || number < 10 || number > 999999 || number.ToString().Length % 2 != 0)
+            if (name == null || number.ToString().Length % 2 != 0)
             {
                 throw new ArgumentException("The number or name is not correct!");
             }

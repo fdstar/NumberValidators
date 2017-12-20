@@ -12,8 +12,4 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <DefineConstants>NET40</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="BusinessRegistrationNos\Validators\" />
-  </ItemGroup>
 </Project>

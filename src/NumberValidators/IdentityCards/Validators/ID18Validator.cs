@@ -82,7 +82,7 @@ namespace NumberValidators.IdentityCards.Validators
         }
         private char GetCheckBit(string idNumber)
         {
-            var mod = ISO7064_1983.Mod(idNumber.Select(c => (int)c - 48).Take(17).ToArray(), WeightingFactors, CheckBits.Length);
+            var mod = ISO7064_1983.MOD_11_2(idNumber.Select(c => (int)c - 48).Take(17).ToArray(), WeightingFactors, 11);
             return CheckBits[mod];
         }
     }

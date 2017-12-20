@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NumberValidators.IdentityCards
+namespace NumberValidators
 {
     /// <summary>
     /// 区域验证级别限制
     /// </summary>
     public enum AreaValidLimit
     {
+        /// <summary>
+        /// 无限制，即不校验，适用于特殊情况，注意并非设置不验证，实际就不进行验证
+        /// </summary>
+        NoValidLimit = 0,
         /// <summary>
         /// 省，即身份证号码的前两位，新中国建立以来行政区域列表还未对省级做过调整
         /// </summary>
