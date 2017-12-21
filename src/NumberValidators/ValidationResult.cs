@@ -44,26 +44,5 @@ namespace NumberValidators
             this.Errors.Add(errorMsg);
             this.IsValid = false;
         }
-        /// <summary>
-        /// 验证号码是否为空
-        /// </summary>
-        /// <typeparam name="T">泛型</typeparam>
-        /// <param name="number">要验证的号码</param>
-        /// <param name="result">验证结果类</param>
-        /// <param name="errorMsg">为空时的错误提示信息</param>
-        /// <returns></returns>
-        internal static bool ValidEmpty<T>(string number, out T result, string errorMsg)
-            where T : ValidationResult, new()
-        {
-            result = new T()
-            {
-                Number = number
-            };
-            if (string.IsNullOrWhiteSpace(number))
-            {
-                result.AddErrorMessage(errorMsg);
-            }
-            return result.IsValid;
-        }
     }
 }

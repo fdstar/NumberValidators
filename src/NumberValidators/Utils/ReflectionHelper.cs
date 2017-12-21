@@ -6,6 +6,9 @@ using System.Text;
 
 namespace NumberValidators.Utils
 {
+    /// <summary>
+    /// 反射接口帮助类
+    /// </summary>
     internal static class ReflectionHelper
     {
         private static readonly ConcurrentDictionary<string, object> concurrentDictionary

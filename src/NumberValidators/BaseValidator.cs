@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NumberValidators.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace NumberValidators
         /// <returns></returns>
         public virtual T Validate(string number)
         {
-            var valid = ValidationResult.ValidEmpty(number, out T result, EmptyErrorMessage)
+            var valid = ValidatorHelper.ValidEmpty(number, out T result, EmptyErrorMessage)
                 && this.ValidWithPattern(number, result);
             return result;
         }

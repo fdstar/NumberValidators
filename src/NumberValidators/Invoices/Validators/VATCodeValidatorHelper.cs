@@ -21,29 +21,10 @@ namespace NumberValidators.Invoices.Validators
         public static VATCodeValidationResult Validate(string vatCode, VATKind? kind = null, VATLength? length = null, ushort minYear = 2012)
         {
             IVATCodeValidator<VATCodeValidationResult> validator = null;
-            var valid = ValidationResult.ValidEmpty(vatCode, out VATCodeValidationResult result, ErrorMessage.Empty)
-                && ValidVATLength(vatCode, length, result)
-                && ValidImplement(vatCode, result, out validator);
+            var valid = ValidatorHelper.ValidEmpty(vatCode, out VATCodeValidationResult result, ErrorMessage.Empty)
+                && ValidatorHelper.ValidLength(vatCode, (int?)length, ErrorMessage.LengthOutOfRange, result)
+                && ValidatorHelper.ValidImplement(vatCode, result, "VATCode{0}Validator", ErrorMessage.InvalidImplement, out validator);
             return validator == null ? result : validator.Validate(vatCode, kind, minYear);
-        }
-        private static bool ValidImplement(string vatCode, VATCodeValidationResult result, out IVATCodeValidator<VATCodeValidationResult> validator)
-        {
-            validator = ReflectionHelper.FindByInterface(typeof(IVATCodeValidator<>), string.Format("VATCode{0}Validator", vatCode.Length)) as IVATCodeValidator<VATCodeValidationResult>;
-            var valid = validator != null;
-            if (!valid)
-            {
-                result.AddErrorMessage(ErrorMessage.InvalidImplement, vatCode.Length);
-            }
-            return valid;
-        }
-        private static bool ValidVATLength(string vatCode, VATLength? validLength, VATCodeValidationResult result)
-        {
-            bool valid = !validLength.HasValue || vatCode.Length == (int)validLength;
-            if (!valid)
-            {
-                result.AddErrorMessage(ErrorMessage.LengthOutOfRange, (int)validLength);
-            }
-            return valid;
         }
     }
 }

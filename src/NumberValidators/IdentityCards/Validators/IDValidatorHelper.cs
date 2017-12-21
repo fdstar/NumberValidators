@@ -39,29 +39,10 @@ namespace NumberValidators.IdentityCards.Validators
         public static IDValidationResult Validate(this string idNumber, ushort minYear = 0, IDLength? validLength = null, AreaValidLimit validLimit = AreaValidLimit.Province, bool ignoreCheckBit = false)
         {
             IIDValidator validator = null;
-            var valid = ValidationResult.ValidEmpty(idNumber, out IDValidationResult result, ErrorMessage.Empty)
-                && ValidIDLength(idNumber, validLength, result)
-                && ValidImplement(idNumber, result, out validator);
+            var valid = ValidatorHelper.ValidEmpty(idNumber, out IDValidationResult result, ErrorMessage.Empty)
+                && ValidatorHelper.ValidLength(idNumber, (int?)validLength, ErrorMessage.LengthOutOfRange, result)
+                && ValidatorHelper.ValidImplement(idNumber, result, "ID{0}Validator", ErrorMessage.InvalidImplement, out validator);
             return validator == null ? result : validator.Validate(idNumber, minYear, validLimit, ignoreCheckBit);
-        }
-        private static bool ValidImplement(string idNumber, IDValidationResult result, out IIDValidator validator)
-        {
-            validator = ReflectionHelper.FindByInterface<IIDValidator>(string.Format("ID{0}Validator", idNumber.Length));
-            var valid = validator != null;
-            if (!valid)
-            {
-                result.AddErrorMessage(ErrorMessage.InvalidImplement, idNumber.Length);
-            }
-            return valid;
-        }
-        private static bool ValidIDLength(string idNumber, IDLength? validLength, IDValidationResult result)
-        {
-            bool valid = !validLength.HasValue || idNumber.Length == (int)validLength;
-            if (!valid)
-            {
-                result.AddErrorMessage(ErrorMessage.LengthOutOfRange, (int)validLength);
-            }
-            return valid;
         }
     }
 }
