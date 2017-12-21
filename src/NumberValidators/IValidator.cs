@@ -9,7 +9,7 @@ namespace NumberValidators
     /// 所有号码验证类均需实现的基础接口定义
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IValidator<T>
+    public interface IValidator<out T>
         where T : ValidationResult, new()
     {
         /// <summary>

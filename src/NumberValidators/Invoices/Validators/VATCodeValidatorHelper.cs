@@ -20,15 +20,15 @@ namespace NumberValidators.Invoices.Validators
         /// <returns></returns>
         public static VATCodeValidationResult Validate(string vatCode, VATKind? kind = null, VATLength? length = null, ushort minYear = 2012)
         {
+            IVATCodeValidator<VATCodeValidationResult> validator = null;
             var valid = ValidationResult.ValidEmpty(vatCode, out VATCodeValidationResult result, ErrorMessage.Empty)
                 && ValidVATLength(vatCode, length, result)
-                && ValidImplement(vatCode, result, out IVATCodeValidator validator)
-                && validator.Validate(vatCode, kind, minYear).IsValid;
-            return result;
+                && ValidImplement(vatCode, result, out validator);
+            return validator == null ? result : validator.Validate(vatCode, kind, minYear);
         }
-        private static bool ValidImplement(string vatCode, VATCodeValidationResult result, out IVATCodeValidator validator)
+        private static bool ValidImplement(string vatCode, VATCodeValidationResult result, out IVATCodeValidator<VATCodeValidationResult> validator)
         {
-            validator = ReflectionHelper.FindByInterface<IVATCodeValidator>(string.Format("VATCode{0}Validator", vatCode.Length));
+            validator = ReflectionHelper.FindByInterface(typeof(IVATCodeValidator<>), string.Format("VATCode{0}Validator", vatCode.Length)) as IVATCodeValidator<VATCodeValidationResult>;
             var valid = validator != null;
             if (!valid)
             {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NumberValidators
+namespace NumberValidators.BusinessRegistrationNos
 {
     /// <summary>
     /// 企业类型
@@ -12,14 +12,14 @@ namespace NumberValidators
         /// <summary>
         /// 内资企业 0123
         /// </summary>
-        Domestic,
+        Domestic = 3,
         /// <summary>
         /// 外资企业 45
         /// </summary>
-        Foreign,
+        Foreign = 5,
         /// <summary>
         /// 个体工商户 6789
         /// </summary>
-        Individual
+        Individual = 9
     }
 }

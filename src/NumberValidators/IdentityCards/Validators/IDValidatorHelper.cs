@@ -38,11 +38,11 @@ namespace NumberValidators.IdentityCards.Validators
         /// <returns>验证结果</returns>
         public static IDValidationResult Validate(this string idNumber, ushort minYear = 0, IDLength? validLength = null, AreaValidLimit validLimit = AreaValidLimit.Province, bool ignoreCheckBit = false)
         {
+            IIDValidator validator = null;
             var valid = ValidationResult.ValidEmpty(idNumber, out IDValidationResult result, ErrorMessage.Empty)
                 && ValidIDLength(idNumber, validLength, result)
-                && ValidImplement(idNumber, result, out IIDValidator validator)
-                && validator.Validate(idNumber, minYear, validLimit, ignoreCheckBit).IsValid;
-            return result;
+                && ValidImplement(idNumber, result, out validator);
+            return validator == null ? result : validator.Validate(idNumber, minYear, validLimit, ignoreCheckBit);
         }
         private static bool ValidImplement(string idNumber, IDValidationResult result, out IIDValidator validator)
         {

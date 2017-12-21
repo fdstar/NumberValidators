@@ -8,7 +8,7 @@ namespace NumberValidators.Invoices.Validators
     /// <summary>
     /// 增值税普通/专用发票代码验证（营改增之后的规则）
     /// </summary>
-    public class VATCode10Validator : VATCodeValidator
+    public class VATCode10Validator : VATCodeValidator<VATCode10ValidationResult>
     {
         /*1-4区域编码
          * 5-6年份 
@@ -82,7 +82,7 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="kind"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override bool ValidVATKind(string vatCode, VATKind? kind, VATCodeValidationResult result)
+        protected override bool ValidVATKind(string vatCode, VATKind? kind, VATCode10ValidationResult result)
         {
             var valid = _kindDic.ContainsKey(vatCode[7]) && (!kind.HasValue || kind.Value == _kindDic[vatCode[7]]);
             if (!valid)
@@ -101,7 +101,7 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="vatCode"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override bool ValidOtherInfo(string vatCode, VATCodeValidationResult result)
+        protected override bool ValidOtherInfo(string vatCode, VATCode10ValidationResult result)
         {
             result.DuplicateNumber = int.Parse(vatCode.Substring(8, 1));
             result.AmountVersion = (AmountVersion)int.Parse(vatCode.Substring(9, 1));

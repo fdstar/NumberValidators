@@ -22,7 +22,7 @@ namespace NumberValidators.Utils.GBT
                 int s = (source[i] + p) % 10 * 2;
                 p = (s == 0 ? 20 : s) % 11;
             }
-            return 11 - p;
+            return (11 - p) % 10;
         }
     }
 }

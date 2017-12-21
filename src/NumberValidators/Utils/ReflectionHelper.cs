@@ -22,7 +22,7 @@ namespace NumberValidators.Utils
             return concurrentDictionary.GetOrAdd(key, _ =>
             {
                 var type = AppDomain.CurrentDomain.GetAssemblies()
-                     .SelectMany(a => a.GetTypes().Where(t => t.Name.Equals(className) && t.GetInterfaces().Contains(interfaceType)))
+                     .SelectMany(a => a.GetTypes().Where(t => t.Name.Equals(className) && t.GetInterface(interfaceType.Name) != null))
                      .FirstOrDefault();
                 return type?.Assembly.CreateInstance(type.FullName);
             });

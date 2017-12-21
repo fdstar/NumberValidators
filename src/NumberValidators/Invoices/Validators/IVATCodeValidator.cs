@@ -8,7 +8,8 @@ namespace NumberValidators.Invoices.Validators
     /// <summary>
     /// 增值税发票代码验证接口
     /// </summary>
-    public interface IVATCodeValidator : IValidator<VATCodeValidationResult>
+    public interface IVATCodeValidator <out TResult>: IValidator<TResult>
+        where TResult : VATCodeValidationResult, new()
     {
         /// <summary>
         /// 用于验证的字典数据
@@ -30,6 +31,6 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="kind">要验证的发票类型，不指定则传null</param>
         /// <param name="minYear">允许的最小年份（注：2012年1月1日营改增开始上海试点）</param>
         /// <returns></returns>
-        VATCodeValidationResult Validate(string vatCode, VATKind? kind = null, ushort minYear = 2012);
+        TResult Validate(string vatCode, VATKind? kind = null, ushort minYear = 2012);
     }
 }

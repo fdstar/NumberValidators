@@ -1,3 +1,5 @@
 /src/.vs
 /src/NumberValidators/bin
 /src/NumberValidators/obj
+/src/NumberValidators.TestConsole/obj
+/src/NumberValidators.TestConsole/bin

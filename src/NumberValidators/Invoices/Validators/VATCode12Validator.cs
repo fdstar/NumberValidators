@@ -11,7 +11,7 @@ namespace NumberValidators.Invoices.Validators
     /// 卷票规则参考 http://www.chinatax.gov.cn/n810341/n810755/c2420199/content.html
     /// 定额发票虽然是12位，但根据《全面推开营改增试点工作（发票）2016年第8号——关于明确通用定额发票使用有关问题的通知》2017.01.01后只有提供车辆停放服务的纳税人、起征点以下的纳税人才可以继续使用定额发票，所以此处不予支持(https://wenku.baidu.com/view/12d624c2d4d8d15abf234e12.html)
     /// </summary>
-    public class VATCode12Validator : VATCodeValidator
+    public class VATCode12Validator : VATCodeValidator<VATCodeValidationResult>
     {
         /* 第1位为0
          * 第2-5位代表省、自治区、直辖市和计划单列市

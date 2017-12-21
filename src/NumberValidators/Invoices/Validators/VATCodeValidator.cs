@@ -9,7 +9,8 @@ namespace NumberValidators.Invoices.Validators
     /// <summary>
     /// 增值税发票验证类
     /// </summary>
-    public abstract class VATCodeValidator : BaseValidatorWithDictionary<VATCodeValidationResult, int, string>, IVATCodeValidator
+    public abstract class VATCodeValidator<TResult> : BaseValidatorWithDictionary<TResult, int, string>, IVATCodeValidator<TResult>
+        where TResult : VATCodeValidationResult, new()
     {
         #region props
         /// <summary>
@@ -77,7 +78,7 @@ namespace NumberValidators.Invoices.Validators
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        public override VATCodeValidationResult Validate(string number)
+        public override TResult Validate(string number)
         {
             return this.Validate(number, minYear: 2012);
         }
@@ -88,24 +89,24 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="kind">发票类型</param>
         /// <param name="minYear">最小年份</param>
         /// <returns></returns>
-        public VATCodeValidationResult Validate(string vatCode, VATKind? kind = null, ushort minYear = 2012)
+        public virtual TResult Validate(string vatCode, VATKind? kind = null, ushort minYear = 2012)
         {
             var result = base.Validate(vatCode);
             var valid = result.IsValid
-                && this.ValidYear(vatCode, minYear, result)
-                && this.ValidArea(vatCode, result)
-                && this.ValidVATKind(vatCode, kind, result)
-                && this.ValidOtherInfo(vatCode, result);
+                && this.ValidYear(result.Number, minYear, result)
+                && this.ValidArea(result.Number, result)
+                && this.ValidVATKind(result.Number, kind, result)
+                && this.ValidOtherInfo(result.Number, result);
             return result;
         }
         #endregion
 
         #region methods
-        private bool ValidYear(string vatCode, ushort minYear, VATCodeValidationResult result)
+        private bool ValidYear(string vatCode, ushort minYear, TResult result)
         {
             var year = this.GetYear(vatCode);
             var yearNow = DateTime.Now.Year;
-            var valid = minYear >= year && year <= yearNow;
+            var valid = year >= minYear && year <= yearNow;
             result.Year = year;
             if (!valid)
             {
@@ -119,7 +120,7 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="vatCode"></param>
         /// <returns></returns>
         protected abstract int GetYear(string vatCode);
-        private bool ValidArea(string vatCode, VATCodeValidationResult result)
+        private bool ValidArea(string vatCode, TResult result)
         {
             var areaNumber = this.GetAreaNumber(vatCode);
             var dic = this.Dictionary.GetDictionary();
@@ -133,7 +134,7 @@ namespace NumberValidators.Invoices.Validators
             {
                 result.AreaName = dic[areaNumber];
             }
-            return true;
+            return valid;
         }
         /// <summary>
         /// 获取行政区划代码
@@ -147,14 +148,14 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="vatCode"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected abstract bool ValidVATKind(string vatCode, VATKind? kind, VATCodeValidationResult result);
+        protected abstract bool ValidVATKind(string vatCode, VATKind? kind, TResult result);
         /// <summary>
         /// 验证填充额外信息
         /// </summary>
         /// <param name="vatCode"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected virtual bool ValidOtherInfo(string vatCode, VATCodeValidationResult result)
+        protected virtual bool ValidOtherInfo(string vatCode, TResult result)
         {
             result.Batch = this.GetBatch(vatCode);
             return true;

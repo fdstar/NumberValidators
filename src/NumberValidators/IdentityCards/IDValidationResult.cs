@@ -25,7 +25,7 @@ namespace NumberValidators.IdentityCards
         /// <summary>
         /// 行政区划编码
         /// </summary>
-        public int AreaNumber { get; set; }
+        public int AreaNumber { get; internal set; }
         /// <summary>
         /// 身份证颁发行政区域（识别出Depth最深的区域），可通过FullName来获取完整的区域名
         /// </summary>
