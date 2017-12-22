@@ -75,7 +75,7 @@ namespace NumberValidators.IdentityCards.Validators
         /// <param name="idNumber"></param>
         /// <param name="rightBit"></param>
         /// <returns></returns>
-        internal protected override bool IsCheckBitRight(string idNumber, out char rightBit)
+        protected override bool IsCheckBitRight(string idNumber, out char rightBit)
         {
             rightBit = GetCheckBit(idNumber);
             return rightBit == char.ToUpper(idNumber[17]);

@@ -19,6 +19,10 @@ namespace NumberValidators.BusinessRegistrationNos
         /// </summary>
         public Area RecognizableArea { get; internal set; }
         /// <summary>
+        /// 号码长度
+        /// </summary>
+        public RegistrationNoLength RegistrationNoLength { get; internal set; }
+        /// <summary>
         /// 校验码
         /// </summary>
         public char CheckBit { get; internal set; }

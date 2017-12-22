@@ -11,10 +11,6 @@ namespace NumberValidators
     public enum AreaValidLimit
     {
         /// <summary>
-        /// 无限制，即不校验，适用于特殊情况，注意并非设置不验证，约定实际以默认设置的最低验证级别为允许的最低级别
-        /// </summary>
-        NoValidLimit = 0,
-        /// <summary>
         /// 省，即身份证号码的前两位，新中国建立以来行政区域列表还未对省级做过调整
         /// </summary>
         Province = 1,

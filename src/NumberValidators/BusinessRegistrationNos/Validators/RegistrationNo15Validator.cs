@@ -1,5 +1,8 @@
-﻿using System;
+﻿using NumberValidators.Utils;
+using NumberValidators.Utils.GBT;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace NumberValidators.BusinessRegistrationNos.Validators
@@ -7,7 +10,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
     /// <summary>
     /// GS15-2006 工商行政管理市场主体注册号编制规则
     /// </summary>
-    public class RegistrationNo15Validator
+    public class RegistrationNo15Validator : RegistrationNoValidator<RegistrationNo15ValidationResult>
     {
         private IValidationDictionary<int, string> _administrationDictionary;
         /// <summary>
@@ -29,6 +32,14 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
             }
         }
         /// <summary>
+        /// 号码长度
+        /// </summary>
+        public override RegistrationNoLength RegistrationNoLength => RegistrationNoLength.Fifteen;
+        /// <summary>
+        /// 验证用正则
+        /// </summary>
+        protected override string RegexPattern => @"^\d{15}$";
+        /// <summary>
         /// 工商行政管理机关代码
         /// </summary>
         internal class AdministrationValidationDictionary : IValidationDictionary<int, string>
@@ -46,6 +57,70 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
             {
                 return Dictionary;
             }
+        }
+        /// <summary>
+        /// 生成工商注册号
+        /// </summary>
+        /// <param name="areaNumber"></param>
+        /// <returns></returns>
+        protected override string GenerateRegistrationNo(string areaNumber)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 验证行政区划
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="validLimit"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override bool ValidArea(string code, AreaValidLimit? validLimit, RegistrationNo15ValidationResult result)
+        {
+            var areaNumber = this.GetAreaNumber(code);
+            var area = AreaHelper.GetDeepestArea(result.AreaNumber, this.AdministrationDictionary);
+            result.AreaNumber = areaNumber;
+            var valid = true;
+            if (area != null)
+            {
+                result.RecognizableArea = area;
+            }
+            else
+            {
+                valid = base.ValidArea(code, validLimit, result);
+            }
+            return valid;
+        }
+        /// <summary>
+        /// 获取行政区划代码
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        protected override int GetAreaNumber(string code)
+        {
+            return int.Parse(code.Substring(0, 6));
+        }
+        /// <summary>
+        /// 验证校验位
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="rightBit"></param>
+        /// <returns></returns>
+        protected override bool IsCheckBitRight(string code, out char rightBit)
+        {
+            var mod = GBT17710_1999.MOD_11_10(code.Select(c => (int)c - 48).Take(14).ToArray());
+            rightBit = (char)(mod + 48);
+            return code[code.Length - 1] == rightBit;
+        }
+        /// <summary>
+        /// 验证其它信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override bool ValidOtherInfo(string code, RegistrationNo15ValidationResult result)
+        {
+            result.SequenceNumber = int.Parse(code.Substring(6, 8));
+            return true;
         }
     }
 }

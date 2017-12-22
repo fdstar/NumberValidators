@@ -181,7 +181,7 @@ namespace NumberValidators.IdentityCards.Validators
         /// </summary>
         /// <param name="idNumber"></param>
         /// <returns></returns>
-        internal protected abstract bool IsCheckBitRight(string idNumber, out char rightBit);
+        protected abstract bool IsCheckBitRight(string idNumber, out char rightBit);
         /// <summary>
         /// 验证并填充其它信息
         /// </summary>
