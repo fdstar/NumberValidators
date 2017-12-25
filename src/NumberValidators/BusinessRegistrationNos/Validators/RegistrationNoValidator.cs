@@ -126,7 +126,11 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// <param name="code"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected abstract bool ValidOtherInfo(string code, TResult result);
+        protected virtual bool ValidOtherInfo(string code, TResult result)
+        {
+            result.RegistrationNoLength = this.RegistrationNoLength;
+            return true;
+        }
         #endregion
     }
 }

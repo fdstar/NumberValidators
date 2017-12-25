@@ -23,7 +23,7 @@ namespace NumberValidators.Invoices.Validators
             IVATCodeValidator<VATCodeValidationResult> validator = null;
             var valid = ValidatorHelper.ValidEmpty(vatCode, out VATCodeValidationResult result, ErrorMessage.Empty)
                 && ValidatorHelper.ValidLength(vatCode, (int?)length, ErrorMessage.LengthOutOfRange, result)
-                && ValidatorHelper.ValidImplement(vatCode, result, "VATCode{0}Validator", ErrorMessage.InvalidImplement, out validator);
+                && ValidatorHelper.ValidImplement(vatCode, result, "VATCode{0}Validator", ErrorMessage.InvalidImplement, out validator, typeof(IVATCodeValidator<>));
             return validator == null ? result : validator.Validate(vatCode, kind, minYear);
         }
     }

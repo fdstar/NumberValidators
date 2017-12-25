@@ -41,7 +41,7 @@ namespace NumberValidators.IdentityCards.Validators
             IIDValidator validator = null;
             var valid = ValidatorHelper.ValidEmpty(idNumber, out IDValidationResult result, ErrorMessage.Empty)
                 && ValidatorHelper.ValidLength(idNumber, (int?)validLength, ErrorMessage.LengthOutOfRange, result)
-                && ValidatorHelper.ValidImplement(idNumber, result, "ID{0}Validator", ErrorMessage.InvalidImplement, out validator);
+                && ValidatorHelper.ValidImplement(idNumber, result, "ID{0}Validator", ErrorMessage.InvalidImplement, out validator, typeof(IIDValidator));
             return validator == null ? result : validator.Validate(idNumber, minYear, validLimit, ignoreCheckBit);
         }
     }

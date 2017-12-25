@@ -19,12 +19,13 @@ namespace NumberValidators.Utils
         /// <param name="classNameFormat">要查找的className的格式，注意占位符{0}为number.Length，如不按照此规则，则不要传入占位符</param>
         /// <param name="errorMsgFormat">未能找到实现时的错误描述，注意占位符{0}为number.Length，如不按照此规则，则不要传入占位符</param>
         /// <param name="validator">验证接口实现类</param>
+        /// <param name="interfaceType">要查找的接口类型，传null代表默认搜索typeof(IValidator<>)</param>
         /// <returns></returns>
-        public static bool ValidImplement<TResult, T>(string number, TResult result, string classNameFormat, string errorMsgFormat, out T validator)
+        public static bool ValidImplement<TResult, T>(string number, TResult result, string classNameFormat, string errorMsgFormat, out T validator, Type interfaceType = null)
             where TResult : ValidationResult, new()
             where T : class, IValidator<TResult>
         {
-            validator = ReflectionHelper.FindByInterface(typeof(IValidator<>), string.Format(classNameFormat, number.Length)) as T;
+            validator = ReflectionHelper.FindByInterface(interfaceType ?? typeof(IValidator<>), string.Format(classNameFormat, number.Length)) as T;
             var valid = validator != null;
             if (!valid)
             {

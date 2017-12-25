@@ -42,7 +42,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// <summary>
         /// 工商行政管理机关代码
         /// </summary>
-        internal class AdministrationValidationDictionary : IValidationDictionary<int, string>
+        private class AdministrationValidationDictionary : IValidationDictionary<int, string>
         {
             private AdministrationValidationDictionary() { }
             /// <summary>
@@ -65,7 +65,29 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// <returns></returns>
         protected override string GenerateRegistrationNo(string areaNumber)
         {
-            throw new NotImplementedException();
+            return this.GenerateRegistrationNo(areaNumber, RandomHelper.GetRandomNumber(10));
+        }
+        /// <summary>
+        /// 生成工商注册码
+        /// </summary>
+        /// <param name="areaNumber">行政区划</param>
+        /// <param name="enterpriseType">企业类型</param>
+        /// <returns></returns>
+        public string GenerateRegistrationNo(int areaNumber, EnterpriseType enterpriseType)
+        {
+            var typeSeed = 4;
+            if (enterpriseType == EnterpriseType.Foreign)
+            {
+                typeSeed = 2;
+            }
+            var rdType = (int)enterpriseType - RandomHelper.GetRandomNumber(typeSeed);
+            return this.GenerateRegistrationNo(areaNumber.ToString().PadRight(6, '0').Substring(0, 6), rdType);
+        }
+        private string GenerateRegistrationNo(string areaNumber, int rdType)
+        {
+            var seqNumber = RandomHelper.GetRandomNumber(10000000).ToString().PadLeft(7, '0');
+            var tmp = string.Format("{0}{1}{2}", areaNumber, rdType, seqNumber);
+            return string.Format("{0}{1}", tmp, this.GetCheckBit(tmp));
         }
         /// <summary>
         /// 验证行政区划
@@ -107,9 +129,13 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// <returns></returns>
         protected override bool IsCheckBitRight(string code, out char rightBit)
         {
-            var mod = GBT17710_1999.MOD_11_10(code.Select(c => (int)c - 48).Take(14).ToArray());
-            rightBit = (char)(mod + 48);
+            rightBit = this.GetCheckBit(code);
             return code[code.Length - 1] == rightBit;
+        }
+        private char GetCheckBit(string code)
+        {
+            var mod = GBT17710_1999.MOD_11_10(code.Select(c => (int)c - 48).Take(14).ToArray());
+            return (char)(mod + 48);
         }
         /// <summary>
         /// 验证其它信息
@@ -120,7 +146,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         protected override bool ValidOtherInfo(string code, RegistrationNo15ValidationResult result)
         {
             result.SequenceNumber = int.Parse(code.Substring(6, 8));
-            return true;
+            return base.ValidOtherInfo(code, result);
         }
     }
 }

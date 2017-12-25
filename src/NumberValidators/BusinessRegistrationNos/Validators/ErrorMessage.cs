@@ -22,6 +22,10 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// </summary>
         public const string InvalidManagement = "无效的登记管理部门代码";
         /// <summary>
+        /// 无效的登记管理部门机构类别代码
+        /// </summary>
+        public const string InvalidManagementKind = "无效的登记管理部门机构类别代码";
+        /// <summary>
         /// 无效的组织机构代码
         /// </summary>
         public const string InvalidOrganizationCode = "无效的组织机构代码";

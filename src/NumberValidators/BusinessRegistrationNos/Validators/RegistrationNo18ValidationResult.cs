@@ -12,19 +12,11 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// <summary>
         /// 登记管理部门代码标志
         /// </summary>
-        public char ManagementCode { get; internal set; }
+        public ManagementCode ManagementCode { get; internal set; }
         /// <summary>
-        /// 登记管理部门名称
+        /// 登记管理部门下机构类别代码标志
         /// </summary>
-        public string  ManagementName { get; internal set; }
-        /// <summary>
-        /// 登记管理部门下的组织机构代码
-        /// </summary>
-        public char ManagementOrgCode { get; internal set; } = '1';
-        /// <summary>
-        /// 登记管理部门下的组织机构名称
-        /// </summary>
-        public string ManagementOrgName { get; internal set; } = string.Empty;
+        public ManagementKindCode ManagementKindCode { get; internal set; } = ManagementKindCode.NonSpecific;
         /// <summary>
         /// 组织机构代码
         /// </summary>

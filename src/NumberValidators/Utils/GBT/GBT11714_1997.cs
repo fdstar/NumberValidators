@@ -49,7 +49,7 @@ namespace NumberValidators.Utils.GBT
             {
                 throw new ArgumentException("Error code.");
             }
-            var mod = 11 - ISO7064_1983.MOD_11_2(code.Select(c => CodeDictionary[c]).Take(8).ToArray(), WeightingFactors, 11);
+            var mod = (11 - ISO7064_1983.MOD_11_2(code.Select(c => CodeDictionary[c]).Take(8).ToArray(), WeightingFactors, 11)) % 11;
             return CheckBits[mod];
         }
     }
