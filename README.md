@@ -28,8 +28,8 @@ valid = VATCodeValidatorHelper.Validate(vatCode); //无法确认是哪种增值�
 ## 工商注册码/统一社会信用代码
 默认提供`RegistrationNo15Validator`（工商注册码）以及`RegistrationNo18Validator`（法人和其他组织统一社会信用代码），具体使用代码如下：
 ```csharp
-valid = new RegistrationNo15Validator().Validate(vatCode); //工商注册码验证
-valid = new RegistrationNo18Validator().Validate(vatCode); //法人和其他组织统一社会信用代码验证
-valid = RegistrationNoValidatorHelper.Validate(vatCode); //无法确认是工商注册码还是法人和其他组织统一社会信用代码时可以通过该类进行验证
+valid = new RegistrationNo15Validator().Validate(code); //工商注册码验证
+valid = new RegistrationNo18Validator().Validate(code); //法人和其他组织统一社会信用代码验证
+valid = RegistrationNoValidatorHelper.Validate(code); //无法确认是工商注册码还是法人和其他组织统一社会信用代码时可以通过该类进行验证
 ```
 注意`RegistrationNo15Validator`返回验证结果为`RegistrationNo15ValidationResult`，`RegistrationNo18Validator`返回验证结果为`RegistrationNo18ValidationResult`，`RegistrationNoValidatorHelper`返回验证结果为`RegistrationNoValidationResult`（实际也可能为`RegistrationNo15ValidationResult`或`RegistrationNo18ValidationResult`）
