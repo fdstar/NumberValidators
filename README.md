@@ -1,6 +1,9 @@
 # NumberValidators
 中国大陆证件、号码的验证类库，目前包含身份证、增值税发票、工商注册码/统一社会信用代码
 
+## .NET版本支持
+目前支持以下版本：`.NET40`、`.NET Standard 2.0`
+
 ## 规范约束`IValidator<out T>`
 所有验证均需实现`IValidator<out T>`接口，其中泛型`T`具备如下约束：必须继承自`ValidationResult`且需有无参构造函数，该接口定义了以下规范：
 * 随机生成一个符合规则的号码 `string GenerateRandomNumber();`
