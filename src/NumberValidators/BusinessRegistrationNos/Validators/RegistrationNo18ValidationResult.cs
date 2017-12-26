@@ -18,7 +18,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// </summary>
         public ManagementKindCode ManagementKindCode { get; internal set; } = ManagementKindCode.NonSpecific;
         /// <summary>
-        /// 组织机构代码
+        /// 组织机构代码，遵循GB/T 11714-1997
         /// </summary>
         public string OrganizationCode { get; internal set; }
     }
