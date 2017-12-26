@@ -11,6 +11,8 @@
 
 实际验证会在此接口基础上定义额外的规范约束，且每种证件号码均默认提供`ValidatorHelper`类，用于统一验证该类型的证件号码，根据实际调用的`IValidator<out T>`实现，返回的`ValidationResult`也可能会有所不同
 
+PS：如果验证结果`IsValid`为True，那么相应的`ValidationResult`会包含该号码可识别的所有信息
+
 ## 身份证
 默认提供`ID15Validator`（15位旧身份证）以及`ID18Validator`（18位新身份证）两种类型的身份证验证，具体使用代码如下：
 ```csharp
@@ -20,7 +22,7 @@ valid = IDValidatorHelper.Validate(idNumber); //无法确认是哪种身份证�
 ```
 
 ## 增值税发票
-默认提供`VATCode10Validator`（增值税专用发票、增值税普通发票、货物运输业增值税专用发票）以及`VATCode12Validator`（增值税普通发票[卷票]、增值税电子普通发票）两种类型的增值税发票验证，具体使用代码如下：
+默认提供`VATCode10Validator`（增值税专用发票、增值税普通发票、货物运输业增值税专用发票）以及`VATCode12Validator`（增值税普通发票[卷票]、增值税电子普通发票）两种长度共五中类型的增值税发票验证（货物运输业增值税专用发票按国家规定目前已停用），具体使用代码如下：
 ```csharp
 valid = new VATCode10Validator().Validate(vatCode); //增值税专用发票、增值税普通发票、货物运输业增值税专用发票验证
 valid = new VATCode12Validator().Validate(vatCode); //增值税普通发票[卷票]、增值税电子普通发票验证
