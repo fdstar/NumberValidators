@@ -68,8 +68,11 @@ namespace NumberValidators.Utils
         /// </summary>
         public const string UnifiedSocialCreditCode = @"^[0-9A-HJ-NP-RTUW-Y]{2}\d{6}[0-9A-HJ-NP-RTUW-Y]{10}$";
         /// <summary>
-        /// 中国护照，电子护照规则可能有误，因为未能查到因公电子护照规则
+        /// 中国大陆护照，注意不包含特区护照（港澳特区护照）
+        /// 因私电子护照新字段2017.04启动 http://www.ailvxing.com/info-103-24211-0.html 第二位使用字母，排除IO，暂时这里符合规定只允许第二位输入字母，估计未来后7位也可能采用同样规则
+        /// 按知乎上的回复，2017年8月底已经是EB开头的护照，大致估算是4个月用掉一个字段，24个字段大致能用96个月，也就是8年，即至少到2025年应该还不会采用第三个字段英文字母
+        /// 因公电子护照规则 http://dfoca.hainan.gov.cn/wsqbzw/gzdt/201205/t20120507_671172.html 2012开始启用因公电子护照，对应有效期，目前应该不再存在非电子因公护照了，但这里匹配上还做支持
         /// </summary>
-        public const string ChinesePassport = @"^(?:[EG]\d{8}|[DSP]\d{7})$";
+        public const string ChinesePassport = @"^(?:G\d{8}|[DSP]E?\d{7}|E[0-9A-HJ-NP-Z]\d{7})$";
     }
 }
