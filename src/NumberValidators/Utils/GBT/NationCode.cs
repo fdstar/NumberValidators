@@ -13,6 +13,7 @@ namespace NumberValidators.Utils.GBT
         /// 世界各国和地区名称代码基础数据 （GB/T 2659-2000）
         /// </summary>
         public static readonly NationCode[] NationCodes = new NationCode[] {
+            #region 基础数据
             new NationCode{ChineseAbbr="阿富汗",EnglishAbbr="AFGHANISTAN",TwoCharCode="AF",ThreeCharCode="AFG",DigitalCode="004",FullNameOfCHS="阿富汗伊斯兰国",FullNameOfENG="Islamic State ofAfghanistan"},
             new NationCode{ChineseAbbr="阿尔巴尼亚",EnglishAbbr="ALBANIA",TwoCharCode="AL",ThreeCharCode="ALB",DigitalCode="008",FullNameOfCHS="阿尔马尼亚共和国",FullNameOfENG="Republic ofAlbania"},
             new NationCode{ChineseAbbr="阿尔及利亚",EnglishAbbr="ALGERIA",TwoCharCode="DZ",ThreeCharCode="DZA",DigitalCode="012",FullNameOfCHS="阿尔及利亚民主人民共和国",FullNameOfENG="Democratic People's Republic of Algeria"},
@@ -252,6 +253,7 @@ namespace NumberValidators.Utils.GBT
             new NationCode{ChineseAbbr="南斯拉夫",EnglishAbbr="YUGOSLAVIA",TwoCharCode="YU",ThreeCharCode="YUG",DigitalCode="891",FullNameOfCHS="南斯拉夫联盟共和国",FullNameOfENG="FederalRepublic of Yugoslavia"},
             new NationCode{ChineseAbbr="赞比亚",EnglishAbbr="ZAMBIA",TwoCharCode="ZM",ThreeCharCode="ZMB",DigitalCode="894",FullNameOfCHS="赞比亚共和国",FullNameOfENG="Republic of Zambia"},
             new NationCode{ChineseAbbr="津巴布韦",EnglishAbbr="ZIMBABWE",TwoCharCode="ZW",ThreeCharCode="ZWE",DigitalCode="716",FullNameOfCHS="津巴布韦共和国",FullNameOfENG="Republic ofZimbabwe"},
+            #endregion
         };
         /// <summary>
         /// 中文简称

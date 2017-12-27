@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NumberValidators.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,7 +39,7 @@ namespace NumberValidators.Invoices.Validators
         /// <summary>
         /// 验证用的正则
         /// </summary>
-        protected override string RegexPattern => @"^\d{8}[2-9][0-4]$";
+        protected override string RegexPattern => RegexPatterns.VATCode10;
         /// <summary>
         /// 生成增值税发票代码
         /// </summary>

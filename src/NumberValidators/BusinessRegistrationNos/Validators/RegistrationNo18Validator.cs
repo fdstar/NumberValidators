@@ -34,7 +34,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// <summary>
         /// 验证用的正则
         /// </summary>
-        protected override string RegexPattern => @"^[0-9A-HJ-NP-RTUW-Y]{2}\d{6}[0-9A-HJ-NP-RTUW-Y]{10}$";
+        protected override string RegexPattern => RegexPatterns.UnifiedSocialCreditCode;
         #endregion
 
         #region oct

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NumberValidators.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace NumberValidators.Invoices.Validators
         /// <summary>
         /// 验证用的正则
         /// </summary>
-        protected override string RegexPattern => @"^0\d{11}$";
+        protected override string RegexPattern => RegexPatterns.VATCode12;
         /// <summary>
         /// 生成增值税发票代码
         /// </summary>

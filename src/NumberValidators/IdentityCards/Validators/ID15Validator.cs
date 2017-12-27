@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NumberValidators.Utils;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace NumberValidators.IdentityCards.Validators
         /// <summary>
         /// 验证用的正则表达式
         /// </summary>
-        protected override string RegexPattern => @"^[1-8]\d{14}$";
+        protected override string RegexPattern => RegexPatterns.FirstIdentityCard;
         /// <summary>
         /// 生成身份证
         /// </summary>

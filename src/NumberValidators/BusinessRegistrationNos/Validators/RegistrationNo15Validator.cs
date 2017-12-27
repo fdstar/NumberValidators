@@ -38,7 +38,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// <summary>
         /// 验证用正则
         /// </summary>
-        protected override string RegexPattern => @"^\d{15}$";
+        protected override string RegexPattern => RegexPatterns.BusinessRegistrationNo;
         /// <summary>
         /// 工商行政管理机关代码
         /// </summary>
