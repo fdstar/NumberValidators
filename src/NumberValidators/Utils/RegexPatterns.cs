@@ -18,27 +18,27 @@ namespace NumberValidators.Utils
         /// 因为2006年5月开始，内地公安机关签发的5年台胞通行证取消了小括号（即原办证机构代码），而目前已经是2017，所以已不存在有效期内有小括号的通行证，故正则不考虑小括号
         /// 理论上应该也不再存在有效期内的10位台湾居民来往大陆通行证，但这里还做支持
         /// </summary>
-        public const string TaiwanPassportFull = @"^\d{8}(\d{2})?$";
+        public const string TaiwanPassFull = @"^\d{8}(\d{2})?$";
         /// <summary>
         /// 台湾居民来往大陆通行证（最新规则）
         /// </summary>
-        public const string TaiwanPassport = @"^\d{8}$";
+        public const string TaiwanPass = @"^\d{8}$";
         /// <summary>
         /// 港澳居民来往内地通行证（包含旧规则）
         /// </summary>
-        public const string HongKongAndMacaoPassportFull = @"^[HM]\d{8}(\d{2})?$";
+        public const string HongKongAndMacaoPassFull = @"^[HM]\d{8}(\d{2})?$";
         /// <summary>
         /// 港澳居民来往内地通行证（最新规则）
         /// </summary>
-        public const string HongKongAndMacaoPassport = @"^[HM]\d{8}$";
+        public const string HongKongAndMacaoPass = @"^[HM]\d{8}$";
         /// <summary>
         /// 港澳台通行证（包含旧规则）
         /// </summary>
-        public const string HMTPassportFull = @"^[HM]?\d{8}(\d{2})?$";
+        public const string HMTPassFull = @"^[HM]?\d{8}(\d{2})?$";
         /// <summary>
         /// 港澳台通行证（最新规则）
         /// </summary>
-        public const string HMTPassport = @"^[HM]?\d{8}$";
+        public const string HMTPass = @"^[HM]?\d{8}$";
         /// <summary>
         /// 15位一代大陆居民身份证
         /// </summary>
@@ -74,5 +74,9 @@ namespace NumberValidators.Utils
         /// 因公电子护照规则 http://dfoca.hainan.gov.cn/wsqbzw/gzdt/201205/t20120507_671172.html 2012开始启用因公电子护照，对应有效期，目前应该不再存在非电子因公护照了，但这里匹配上还做支持
         /// </summary>
         public const string ChinesePassport = @"^(?:G\d{8}|[DSP]E?\d{7}|E[0-9A-HJ-NP-Z]\d{7})$";
+        /// <summary>
+        /// 通用护照标准，按国际民航组织9303约定，最大不能超过9位
+        /// </summary>
+        public const string GeneralPassport = @"^[0-9A-Za-z]{5,9}$";
     }
 }
