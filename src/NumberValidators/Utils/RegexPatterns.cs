@@ -67,5 +67,9 @@ namespace NumberValidators.Utils
         /// 法人和其他组织统一社会信用代码
         /// </summary>
         public const string UnifiedSocialCreditCode = @"^[0-9A-HJ-NP-RTUW-Y]{2}\d{6}[0-9A-HJ-NP-RTUW-Y]{10}$";
+        /// <summary>
+        /// 中国护照，电子护照规则可能有误，因为未能查到因公电子护照规则
+        /// </summary>
+        public const string ChinesePassport = @"^(?:[EG]\d{8}|[DSP]\d{7})$";
     }
 }
