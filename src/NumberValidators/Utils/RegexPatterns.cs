@@ -78,5 +78,13 @@ namespace NumberValidators.Utils
         /// 通用护照标准，按国际民航组织9303约定，最大不能超过9位
         /// </summary>
         public const string GeneralPassport = @"^[0-9A-Za-z]{5,9}$";
+
+        /*
+         * 纳税人识别号 http://blog.sina.com.cn/s/blog_5fb8de860102vvpd.html
+         * 组织结构是15位，法人是20位，补全依据 http://www.doc88.com/p-3985541443573.html
+         * 三证合一后的社会统一验证代码也是纳税人识别号
+         * 自然人是18位，对于一代身份证不清楚是否和法人一样补全3位0
+         * 其它证件，也就是15位的无法获取校验位计算规则
+         */
     }
 }
