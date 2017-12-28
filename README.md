@@ -11,7 +11,7 @@
 
 实际验证会在此接口基础上定义额外的规范约束，且每种证件号码均默认提供`ValidatorHelper`类，用于统一验证该类型的证件号码，根据实际调用的`IValidator<out T>`实现，返回的`ValidationResult`也可能会有所不同
 
-PS：如果验证结果`IsValid`为True，那么相应的`ValidationResult`会包含该号码可识别的所有信息
+PS：如果验证结果`IsValid`为True，那么相应的`ValidationResult`会包含该号码可识别的所有信息，以身份证为例，返回结果会包含**行政区划（即出生登记地）、出生日期、登记序列号、校验位**
 
 ## 简单的使用示例
 ### 1、大陆居民身份证
@@ -19,7 +19,7 @@ PS：如果验证结果`IsValid`为True，那么相应的`ValidationResult`会�
 ```csharp
 valid = new ID15Validator().Validate(idNumber); //旧身份证验证
 valid = new ID18Validator().Validate(idNumber); //新身份证验证
-valid = IDValidatorHelper.Validate(idNumber); //无法确认是哪种身份证时可以通过该类进行验证
+valid = IDValidatorHelper.Validate(idNumber, ignoreCheckBit: false); //无法确认是哪种身份证时可以通过该类进行验证
 ```
 
 ### 2、增值税发票
@@ -27,7 +27,7 @@ valid = IDValidatorHelper.Validate(idNumber); //无法确认是哪种身份证�
 ```csharp
 valid = new VATCode10Validator().Validate(vatCode); //增值税专用发票、增值税普通发票、货物运输业增值税专用发票验证
 valid = new VATCode12Validator().Validate(vatCode); //增值税普通发票[卷票]、增值税电子普通发票验证
-valid = VATCodeValidatorHelper.Validate(vatCode); //无法确认是哪种增值税发票时可以通过该类进行验证
+valid = VATCodeValidatorHelper.Validate(vatCode, minYear: 2012); //无法确认是哪种增值税发票时可以通过该类进行验证
 ```
 注意`VATCode10Validator`返回验证结果为`VATCode10ValidationResult`，`VATCode12Validator`返回验证结果为`VATCodeValidationResult`，`VATCodeValidatorHelper`返回验证结果为`VATCodeValidationResult`（实际也可能为`VATCode10ValidationResult`）
 
@@ -36,6 +36,6 @@ valid = VATCodeValidatorHelper.Validate(vatCode); //无法确认是哪种增值�
 ```csharp
 valid = new RegistrationNo15Validator().Validate(code); //工商注册码验证
 valid = new RegistrationNo18Validator().Validate(code); //法人和其他组织统一社会信用代码验证
-valid = RegistrationNoValidatorHelper.Validate(code); //无法确认是工商注册码还是法人和其他组织统一社会信用代码时可以通过该类进行验证
+valid = RegistrationNoValidatorHelper.Validate(code, validLimit: null); //无法确认是工商注册码还是法人和其他组织统一社会信用代码时可以通过该类进行验证
 ```
 注意`RegistrationNo15Validator`返回验证结果为`RegistrationNo15ValidationResult`，`RegistrationNo18Validator`返回验证结果为`RegistrationNo18ValidationResult`，`RegistrationNoValidatorHelper`返回验证结果为`RegistrationNoValidationResult`（实际也可能为`RegistrationNo15ValidationResult`或`RegistrationNo18ValidationResult`）
