@@ -115,9 +115,10 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
             return valid;
         }
         /// <summary>
-        /// 获取校验位
+        /// 判断校验位是否正确
         /// </summary>
-        /// <param name="idNumber"></param>
+        /// <param name="code">待校验的号码</param>
+        /// <param name="rightBit">正确的校验位</param>
         /// <returns></returns>
         protected abstract bool IsCheckBitRight(string code, out char rightBit);
         /// <summary>

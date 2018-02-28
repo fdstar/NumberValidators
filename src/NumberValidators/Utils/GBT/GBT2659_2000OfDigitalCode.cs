@@ -19,6 +19,10 @@ namespace NumberValidators.Utils.GBT
         /// 基础数据字典
         /// </summary>
         static readonly Dictionary<string, NationCode> Dictionary = NationCode.NationCodes.ToDictionary(c => c.DigitalCode, c => c);
+        /// <summary>
+        /// 获取字典
+        /// </summary>
+        /// <returns></returns>
         public IDictionary<string, NationCode> GetDictionary()
         {
             return Dictionary;

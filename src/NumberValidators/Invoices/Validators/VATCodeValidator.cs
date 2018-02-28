@@ -146,6 +146,7 @@ namespace NumberValidators.Invoices.Validators
         /// 验证发票类型是否正确
         /// </summary>
         /// <param name="vatCode"></param>
+        /// <param name="kind"></param>
         /// <param name="result"></param>
         /// <returns></returns>
         protected abstract bool ValidVATKind(string vatCode, VATKind? kind, TResult result);

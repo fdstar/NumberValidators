@@ -177,9 +177,10 @@ namespace NumberValidators.IdentityCards.Validators
             return valid;
         }
         /// <summary>
-        /// 获取校验位
+        /// 判断校验位是否正确
         /// </summary>
         /// <param name="idNumber"></param>
+        /// <param name="rightBit"></param>
         /// <returns></returns>
         protected abstract bool IsCheckBitRight(string idNumber, out char rightBit);
         /// <summary>
@@ -200,7 +201,6 @@ namespace NumberValidators.IdentityCards.Validators
         /// 获取出生登记序列号
         /// </summary>
         /// <param name="idNumber"></param>
-        /// <param name="result"></param>
         protected abstract string GetSequenceNumber(string idNumber);
 
         #endregion
