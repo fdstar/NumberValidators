@@ -16,6 +16,7 @@ namespace NumberValidators.Invoices
         /// </summary>
         public static readonly GBT2260OnlyProvince Singleton = new GBT2260OnlyProvince();
 
+        //所有支持区域可从航信官网对比 http://www.aisino.com/links.asp
         static readonly Dictionary<int, string> Dictionary = new Dictionary<int, string>
         {
             #region 区域代码
@@ -25,11 +26,13 @@ namespace NumberValidators.Invoices
             { 1400,"山西省"},
             { 1500,"内蒙古自治区"},
             { 2100,"辽宁省"},
+            { 2102,"大连市"},
             { 2200,"吉林省"},
             { 2300,"黑龙江省"},
             { 3100,"上海市"},
             { 3200,"江苏省"},
             { 3300,"浙江省"},
+            { 3302,"宁波市"},
             { 3400,"安徽省"},
             { 3500,"福建省"},
             { 3502,"厦门市"},
