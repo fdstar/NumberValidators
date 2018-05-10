@@ -1,6 +1,9 @@
 # NumberValidators
 中国大陆证件、号码的验证类库，目前包含身份证、增值税发票、工商注册码/统一社会信用代码
 
+[![NuGet version (NumberValidators)](https://img.shields.io/nuget/v/NumberValidators.svg?style=flat-square)](https://www.nuget.org/packages/NumberValidators/)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://mit-license.org/)
+
 ## .NET版本支持
 目前支持以下版本：`.NET40`、`.NET Standard 2.0`
 
@@ -41,3 +44,8 @@ valid = new RegistrationNo18Validator().Validate(code); //法人和其他组织�
 valid = RegistrationNoValidatorHelper.Validate(code, validLimit: null); //无法确认是工商注册码还是法人和其他组织统一社会信用代码时可以通过该类进行验证
 ```
 注意`RegistrationNo15Validator`返回验证结果为`RegistrationNo15ValidationResult`，`RegistrationNo18Validator`返回验证结果为`RegistrationNo18ValidationResult`，`RegistrationNoValidatorHelper`返回验证结果为`RegistrationNoValidationResult`（实际也可能为`RegistrationNo15ValidationResult`或`RegistrationNo18ValidationResult`）
+
+
+## Release History
+**2018-05-09**
+- Release v1.0.0
