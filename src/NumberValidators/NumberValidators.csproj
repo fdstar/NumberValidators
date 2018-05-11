@@ -5,6 +5,7 @@
     <Authors>dong fang</Authors>
     <Description>中国大陆证件、发票等有国家规定标准的验证类库</Description>
     <PackageProjectUrl>https://github.com/fdstar/NumberValidators</PackageProjectUrl>
+    <PackageLicenseUrl>https://mit-license.org/</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup>
