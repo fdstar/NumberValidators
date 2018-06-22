@@ -30,5 +30,9 @@ namespace NumberValidators.Invoices
         /// 印刷批次
         /// </summary>
         public int Batch { get; internal set; }
+        /// <summary>
+        /// 发票联次，仅10位长度和12位长度折叠票发票才有
+        /// </summary>
+        public int DuplicateNumber { get; internal set; }
     }
 }

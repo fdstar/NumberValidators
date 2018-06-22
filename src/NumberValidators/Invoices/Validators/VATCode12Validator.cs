@@ -18,18 +18,20 @@ namespace NumberValidators.Invoices.Validators
          * 第2-5位代表省、自治区、直辖市和计划单列市
          * 第6-7位代表年度
          * 第8-10位代表批次
-         * 第11-12位代表票种和规格（11代表增值税电子普通发票，06代表57mm×177.8mm增值税普通发票（卷票），07代表76mm×177.8mm增值税普通发票（卷票））
+         * 第11-12位代表票种和规格/联次（11代表增值税电子普通发票，06代表57mm×177.8mm增值税普通发票（卷票），07代表76mm×177.8mm增值税普通发票（卷票），04代表二联增值税普通发票（折叠票），05代表五联增值税普通发票（折叠票））
          * 发票号码为8位，按年度、分批次编制。*/
         private static readonly Dictionary<string, VATKind> _kindDic = new Dictionary<string, VATKind>
         {
             {"11",VATKind.Electronic },
             {"06",VATKind.Roll},
             {"07",VATKind.Roll},
+            {"04",VATKind.Plain},
+            {"05",VATKind.Plain},
         };
         /// <summary>
         /// 支持的增值税发票类型
         /// </summary>
-        protected override IEnumerable<VATKind> SupportKind => new VATKind[] { VATKind.Electronic, VATKind.Roll };
+        protected override IEnumerable<VATKind> SupportKind => _kindDic.Values.Distinct();
         /// <summary>
         /// 验证用的正则
         /// </summary>
@@ -88,6 +90,10 @@ namespace NumberValidators.Invoices.Validators
             else
             {
                 result.Category = _kindDic[key];
+                if (result.Category == VATKind.Plain)
+                {
+                    result.DuplicateNumber = key == "04" ? 2 : 5;
+                }
             }
             return valid;
         }

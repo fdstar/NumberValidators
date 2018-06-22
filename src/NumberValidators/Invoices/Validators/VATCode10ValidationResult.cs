@@ -10,10 +10,6 @@ namespace NumberValidators.Invoices.Validators
     public class VATCode10ValidationResult : VATCodeValidationResult
     {
         /// <summary>
-        /// 发票联次，仅10位长度发票才有
-        /// </summary>
-        public int DuplicateNumber { get; internal set; }
-        /// <summary>
         /// 发票金额版本号，仅10位长度发票才有
         /// </summary>
         public AmountVersion AmountVersion { get; internal set; }

@@ -22,11 +22,13 @@ namespace NumberValidators.TestConsole
             Console.WriteLine();
             Console.WriteLine("***增值税发票***");
             var vat10Validator = new VATCode10Validator();
+            var vat12Validator = new VATCode12Validator();
             Console.WriteLine("随机的增值税发票：" + vat10Validator.GenerateRandomNumber());
             Console.WriteLine("生成指定的增值税专用发票：" + vat10Validator.GenerateVATCode(3700, 2017, 1, Invoices.VATKind.Special));
-            Console.WriteLine("生成指定的增值税普通发票：" + vat10Validator.GenerateVATCode(1100, 2017, 2, Invoices.VATKind.Plain));
-            Console.WriteLine("随机的增值税电子/卷票：" + new VATCode12Validator().GenerateRandomNumber());
-            string[] vatArr = { "031001600311", "3100153130" };
+            Console.WriteLine("生成指定的10位增值税普通发票：" + vat10Validator.GenerateVATCode(1100, 2017, 2, Invoices.VATKind.Plain));
+            Console.WriteLine("生成指定的12位增值税普通发票：" + vat12Validator.GenerateVATCode(1100, 2018, 6, Invoices.VATKind.Plain));
+            Console.WriteLine("随机的增值税电子/卷票/普票：" + vat12Validator.GenerateRandomNumber());
+            string[] vatArr = { "031001600311", "3100153130", "011001800304" };
             foreach (var vat in vatArr)
             {
                 var valid = VATCodeValidatorHelper.Validate(vat, minYear: 2012);
