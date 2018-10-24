@@ -11,7 +11,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
     public static class RegistrationNoValidatorHelper
     {
         /// <summary>
-        /// 验证身份证是否正确
+        /// 验证工商注册号、统一社会信用代码是否正确
         /// </summary>
         /// <param name="code">工商注册号、统一社会信用代码</param>
         /// <param name="validLength">要验证的证件长度，默认不指定null</param>
