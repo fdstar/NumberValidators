@@ -18,13 +18,24 @@ namespace NumberValidators.Utils.GBT
         /// <summary>
         /// 基础数据字典
         /// </summary>
-        static readonly Dictionary<string, NationCode> Dictionary = NationCode.NationCodes.ToDictionary(c => c.DigitalCode, c => c);
+        private static Dictionary<string, NationCode> Dictionary;
+        private static object _lockObj = new object();
         /// <summary>
         /// 获取字典
         /// </summary>
         /// <returns></returns>
         public IDictionary<string, NationCode> GetDictionary()
         {
+            if (Dictionary == null)
+            {
+                lock (_lockObj)
+                {
+                    if (Dictionary == null)
+                    {
+                        Dictionary = NationCode.NationCodes.Value.ToDictionary(c => c.DigitalCode, c => c);
+                    }
+                }
+            }
             return Dictionary;
         }
     }
