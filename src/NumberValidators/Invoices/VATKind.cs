@@ -31,4 +31,18 @@ namespace NumberValidators.Invoices
         /// </summary>
         Electronic = 51,
     }
+    /// <summary>
+    /// 增值税电子发票细分类型
+    /// </summary>
+    public enum ElectronicVATKind
+    {
+        /// <summary>
+        /// 普通的增值税电子发票
+        /// </summary>
+        Normal = 11,
+        /// <summary>
+        /// 收费公路通行费
+        /// </summary>
+        TollRoad = 12,
+    }
 }
