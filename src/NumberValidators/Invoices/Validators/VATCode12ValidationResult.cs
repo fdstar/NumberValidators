@@ -12,6 +12,6 @@ namespace NumberValidators.Invoices.Validators
         /// <summary>
         /// 增值税电子发票细分类型
         /// </summary>
-        public ElectronicVATKind ElectronicVATKind { get; set; }
+        public ElectronicVATKind? ElectronicVATKind { get; set; }
     }
 }
