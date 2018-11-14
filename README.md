@@ -34,7 +34,7 @@ valid = new VATCode10Validator().Validate(vatCode); //增值税专用发票、�
 valid = new VATCode12Validator().Validate(vatCode); //增值税普通发票[卷票]、增值税电子普通发票验证
 valid = VATCodeValidatorHelper.Validate(vatCode, minYear: 2012); //无法确认是哪种增值税发票时可以通过该类进行验证
 ```
-注意`VATCode10Validator`返回验证结果为`VATCode10ValidationResult`，`VATCode12Validator`返回验证结果为`VATCodeValidationResult`，`VATCodeValidatorHelper`返回验证结果为`VATCodeValidationResult`（实际也可能为`VATCode10ValidationResult`）
+注意`VATCode10Validator`返回验证结果为`VATCode10ValidationResult`，`VATCode12Validator`返回验证结果为`VATCode12ValidationResult`，`VATCodeValidatorHelper`返回验证结果为`VATCodeValidationResult`（实际也可能为`VATCode10ValidationResult`或`VATCode12ValidationResult`）
 
 ### 3、工商注册码/统一社会信用代码
 默认提供`RegistrationNo15Validator`（工商注册码）以及`RegistrationNo18Validator`（法人和其他组织统一社会信用代码），具体使用代码如下：
