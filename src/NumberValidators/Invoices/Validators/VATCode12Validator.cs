@@ -12,6 +12,7 @@ namespace NumberValidators.Invoices.Validators
     /// 卷票规则参考 http://www.chinatax.gov.cn/n810341/n810755/c2420199/content.html
     /// 收费公路通行费增值税电子普通发票规则参考 http://www.chinatax.gov.cn/n810341/n810755/c2985595/content.html
     /// 定额发票虽然是12位，但根据《全面推开营改增试点工作（发票）2016年第8号——关于明确通用定额发票使用有关问题的通知》2017.01.01后只有提供车辆停放服务的纳税人、起征点以下的纳税人才可以继续使用定额发票，所以此处不予支持(https://wenku.baidu.com/view/12d624c2d4d8d15abf234e12.html)
+    /// 区块链电子普通发票的发票代码 例如144031809110,第6－7位为年份，第8位0代表行业种类为通用类、第9位9代表深圳电子普通发票专属种类类别，第10位代表批次，第11位代表联次，第12位0代表无限制金额版 http://www.360doc.com/content/18/0905/12/12373774_784061533.shtml
     /// </summary>
     public class VATCode12Validator : VATCodeValidator<VATCode12ValidationResult>
     {
