@@ -49,5 +49,6 @@ valid = RegistrationNoValidatorHelper.Validate(code, validLimit: null); //无法
 ## Release History
 **2019-08-05**
 - Release v1.0.1 增加12位增值税普通发票支持，增加支持增值税电子发票通行费支持
+
 **2018-05-09**
 - Release v1.0.0
