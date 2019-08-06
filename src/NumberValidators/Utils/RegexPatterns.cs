@@ -56,9 +56,9 @@ namespace NumberValidators.Utils
         /// </summary>
         public const string VATCode10 = @"^\d{8}[2-9][0-4]$";
         /// <summary>
-        /// 增值税电子普通、普通（卷票）
+        /// 增值税电子普通、普通（卷票）、区块链电子发票
         /// </summary>
-        public const string VATCode12 = @"^0\d{11}$";
+        public const string VATCode12 = @"^[01]\d{11}$";
         /// <summary>
         /// 工商注册码
         /// </summary>

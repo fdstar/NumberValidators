@@ -44,7 +44,7 @@ namespace NumberValidators.Invoices.Validators
         /// </summary>
         protected override string RegexPattern => RegexPatterns.VATCode12;
         /// <summary>
-        /// 生成增值税发票代码
+        /// 生成增值税发票代码（注意不支持生成区块链发票）
         /// </summary>
         /// <param name="areaNumber"></param>
         /// <param name="year"></param>
@@ -88,30 +88,46 @@ namespace NumberValidators.Invoices.Validators
         /// <returns></returns>
         protected override bool ValidVATKind(string vatCode, VATKind? kind, VATCode12ValidationResult result)
         {
-            var key = vatCode.Substring(10, 2);
-            var valid = _kindDic.ContainsKey(key) && (!kind.HasValue || kind.Value == _kindDic[key]);
-            if (!valid)
+            if (vatCode[0] == '1')
             {
+                //区块链发票以1开头
+                if (vatCode[11] == '0' && (!kind.HasValue || kind.Value == VATKind.Blockchain))
+                {
+                    result.Category = VATKind.Blockchain;
+                    result.DuplicateNumber = int.Parse(vatCode[10].ToString());
+                    return true;
+                }
                 result.AddErrorMessage(ErrorMessage.InvalidKind);
+                return false;
             }
             else
             {
-                result.Category = _kindDic[key];
-                switch (result.Category)
+                //增值税发票以0开头
+                var key = vatCode.Substring(10, 2);
+                var valid = _kindDic.ContainsKey(key) && (!kind.HasValue || kind.Value == _kindDic[key]);
+                if (!valid)
                 {
-                    case VATKind.Plain:
-                        result.DuplicateNumber = key == "04" ? 2 : 5;
-                        break;
-                    case VATKind.Electronic:
-                        if (Enum.TryParse(key, out ElectronicVATKind eKind))
-                        {
-                            result.ElectronicVATKind = eKind;
-                        }
-                        break;
-                    default: break;
+                    result.AddErrorMessage(ErrorMessage.InvalidKind);
                 }
+                else
+                {
+                    result.Category = _kindDic[key];
+                    switch (result.Category)
+                    {
+                        case VATKind.Plain:
+                            result.DuplicateNumber = key == "04" ? 2 : 5;
+                            break;
+                        case VATKind.Electronic:
+                            if (Enum.TryParse(key, out ElectronicVATKind eKind))
+                            {
+                                result.ElectronicVATKind = eKind;
+                            }
+                            break;
+                        default: break;
+                    }
+                }
+                return valid;
             }
-            return valid;
         }
         /// <summary>
         /// 获取批次
@@ -120,7 +136,16 @@ namespace NumberValidators.Invoices.Validators
         /// <returns></returns>
         protected override int GetBatch(string vatCode)
         {
-            return int.Parse(vatCode.Substring(7, 3));
+            if (vatCode[0] == '0')
+            {
+                //增值税发票
+                return int.Parse(vatCode.Substring(7, 3));
+            }
+            else
+            {
+                //区块链电子发票
+                return int.Parse(vatCode[9].ToString());
+            }
         }
     }
 }

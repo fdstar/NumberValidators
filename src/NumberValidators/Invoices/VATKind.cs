@@ -30,6 +30,10 @@ namespace NumberValidators.Invoices
         /// 增值税电子普通发票
         /// </summary>
         Electronic = 51,
+        /// <summary>
+        /// 区块链电子发票
+        /// </summary>
+        Blockchain = 71,
     }
     /// <summary>
     /// 增值税电子发票细分类型
