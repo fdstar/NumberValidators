@@ -94,8 +94,8 @@ namespace NumberValidators.Invoices.Validators
             var result = base.Validate(vatCode);
             var valid = result.IsValid
                 && this.ValidYear(result.Number, minYear, result)
-                && this.ValidArea(result.Number, result)
                 && this.ValidVATKind(result.Number, kind, result)
+                && this.ValidArea(result.Number, result)
                 && this.ValidOtherInfo(result.Number, result);
             return result;
         }
@@ -126,6 +126,11 @@ namespace NumberValidators.Invoices.Validators
             var dic = this.Dictionary.GetDictionary();
             var valid = dic.ContainsKey(areaNumber);
             result.AreaNumber = areaNumber;
+            if (!valid && this.AreaValidSkip34(result.Category.Value))
+            {
+                areaNumber = areaNumber / 100 * 100;
+                valid = dic.ContainsKey(areaNumber);
+            }
             if (!valid)
             {
                 result.AddErrorMessage(ErrorMessage.InvalidArea);
@@ -135,6 +140,13 @@ namespace NumberValidators.Invoices.Validators
                 result.AreaName = dic[areaNumber];
             }
             return valid;
+        }
+        /// <summary>
+        /// 区域校验时是否忽略34两位行政区划编码
+        /// </summary>
+        protected virtual bool AreaValidSkip34(VATKind kind)
+        {
+            return false;
         }
         /// <summary>
         /// 获取行政区划代码

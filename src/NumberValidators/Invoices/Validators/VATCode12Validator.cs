@@ -80,6 +80,19 @@ namespace NumberValidators.Invoices.Validators
             return int.Parse(vatCode.Substring(1, 4));
         }
         /// <summary>
+        /// 区域校验时是否忽略34两位行政区划编码
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        protected override bool AreaValidSkip34(VATKind kind)
+        {
+            if (kind == VATKind.Electronic)
+            {//电子发票行政区划可能会具体到市级，吉林、安徽、山东、湖北 都发现具体到市级行政编号的情况，所以电子发票支持只查前2位行政区划
+                return true;
+            }
+            return base.AreaValidSkip34(kind);
+        }
+        /// <summary>
         /// 验证类型是否符合
         /// </summary>
         /// <param name="vatCode"></param>
