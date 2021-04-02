@@ -47,8 +47,9 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="year"></param>
         /// <param name="batch"></param>
         /// <param name="kind"></param>
+        /// <param name="electKind">如果发票种类为电子发票时，要生成的电子发票细分类型</param>
         /// <returns></returns>
-        protected override string GenerateVATCode(string areaNumber, string year, ushort batch, VATKind kind)
+        protected override string GenerateVATCode(string areaNumber, string year, ushort batch, VATKind kind, ElectronicVATKind? electKind)
         {
             var query = _kindDic.Where(kv => kv.Value == kind);
             if (!query.Any())

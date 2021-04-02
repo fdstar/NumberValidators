@@ -55,14 +55,15 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="year">发票年份</param>
         /// <param name="batch">批次</param>
         /// <param name="kind">发票类型</param>
+        /// <param name="electKind">如果发票种类为电子发票时，要生成的电子发票细分类型</param>
         /// <returns></returns>
-        public virtual string GenerateVATCode(int areaNumber, ushort year, ushort batch, VATKind kind)
+        public virtual string GenerateVATCode(int areaNumber, ushort year, ushort batch, VATKind kind, ElectronicVATKind? electKind = null)
         {
             if (areaNumber < 10 || areaNumber > 9999)
             {
                 throw new ArgumentException("argument error");
             }
-            return this.GenerateVATCode(areaNumber.ToString().PadRight(4, '0'), (year % 100).ToString().PadLeft(2, '0'), batch, kind);
+            return this.GenerateVATCode(areaNumber.ToString().PadRight(4, '0'), (year % 100).ToString().PadLeft(2, '0'), batch, kind, electKind);
         }
         /// <summary>
         /// 按输入生成发票代码
@@ -71,8 +72,9 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="year"></param>
         /// <param name="batch"></param>
         /// <param name="kind"></param>
+        /// <param name="electKind">如果发票种类为电子发票时，要生成的电子发票细分类型</param>
         /// <returns></returns>
-        protected abstract string GenerateVATCode(string areaNumber, string year, ushort batch, VATKind kind);
+        protected abstract string GenerateVATCode(string areaNumber, string year, ushort batch, VATKind kind, ElectronicVATKind? electKind);
         /// <summary>
         /// 验证发票代码是否正确
         /// </summary>

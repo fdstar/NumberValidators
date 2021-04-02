@@ -22,8 +22,9 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="year">年份</param>
         /// <param name="batch">批次</param>
         /// <param name="kind">要生成的发票类型</param>
+        /// <param name="electKind">如果发票种类为电子发票时，要生成的电子发票细分类型</param>
         /// <returns></returns>
-        string GenerateVATCode(int areaNumber, ushort year, ushort batch, VATKind kind);
+        string GenerateVATCode(int areaNumber, ushort year, ushort batch, VATKind kind, ElectronicVATKind? electKind = null);
         /// <summary>
         /// 发票代码验证
         /// </summary>

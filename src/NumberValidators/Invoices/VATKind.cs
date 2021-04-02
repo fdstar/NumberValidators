@@ -27,7 +27,7 @@ namespace NumberValidators.Invoices
         /// </summary>
         Roll = 41,
         /// <summary>
-        /// 增值税电子普通发票
+        /// 增值税电子发票
         /// </summary>
         Electronic = 51,
         /// <summary>
@@ -48,5 +48,9 @@ namespace NumberValidators.Invoices
         /// 收费公路通行费
         /// </summary>
         TollRoad = 12,
+        /// <summary>
+        /// 电子专票
+        /// </summary>
+        Special = 13,
     }
 }
