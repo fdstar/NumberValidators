@@ -1,5 +1,6 @@
 ﻿using NumberValidators.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,9 @@ namespace NumberValidators.IdentityCards.Validators
     /// </summary>
     public static class IDValidatorHelper
     {
+        private static readonly ConcurrentDictionary<IDLength, IIDValidator> concurrentDictionary
+            = new ConcurrentDictionary<IDLength, IIDValidator>();
+
         /// <summary>
         /// 身份证升位，如果返回false表示升位失败，输入的旧身份证号码不正确
         /// </summary>
@@ -41,8 +45,46 @@ namespace NumberValidators.IdentityCards.Validators
             IIDValidator validator = null;
             var valid = ValidatorHelper.ValidEmpty(idNumber, out IDValidationResult result, ErrorMessage.Empty)
                 && ValidatorHelper.ValidLength(idNumber, (int?)validLength, ErrorMessage.LengthOutOfRange, result)
-                && ValidatorHelper.ValidImplement(idNumber, result, "ID{0}Validator", ErrorMessage.InvalidImplement, out validator, typeof(IIDValidator));
+                && ValidImplement(idNumber, result, out validator);
             return validator == null ? result : validator.Validate(idNumber, minYear, validLimit, ignoreCheckBit);
+        }
+
+        private static bool ValidImplement(string code, IDValidationResult result, out IIDValidator validator)
+        {
+            if (concurrentDictionary.Count > 0)
+            {
+                if (!concurrentDictionary.TryGetValue((IDLength)code.Length, out validator))
+                {
+                    result.AddErrorMessage(ErrorMessage.InvalidImplement, code.Length);
+                }
+            }
+            else
+            {
+                ValidatorHelper.ValidImplement(code, result, "ID{0}Validator", ErrorMessage.InvalidImplement, out validator, typeof(IIDValidator));
+            }
+            return validator != null;
+        }
+
+        /// <summary>
+        /// 设置默认的校验规则，注意如果进行了设置，那么将不再进行自动推导，但会调用<see cref="AddDefaultValidator"/>进行默认设置
+        /// </summary>
+        /// <param name="idLength">默认校验实现对应的编号长度</param>
+        /// <param name="validator">默认实现</param>
+        public static void SetValidator(IDLength idLength, IIDValidator validator)
+        {
+            if (concurrentDictionary.Count == 0)
+            {
+                AddDefaultValidator();
+            }
+            concurrentDictionary.AddOrUpdate(idLength, k => null, (k, a) => validator);
+        }
+        /// <summary>
+        /// 添加默认已提供的<see cref="IDLength"/>对应实现，用于临时解决core下可能会出现的反射错误
+        /// </summary>
+        public static void AddDefaultValidator()
+        {
+            concurrentDictionary.TryAdd(IDLength.Fifteen, new ID15Validator());
+            concurrentDictionary.TryAdd(IDLength.Eighteen, new ID18Validator());
         }
     }
 }

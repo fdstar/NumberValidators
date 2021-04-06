@@ -16,6 +16,9 @@ namespace NumberValidators.TestConsole
             Console.WriteLine("随机的新身份证：" + id18Validator.GenerateRandomNumber());
             var id15Validator = new ID15Validator();
             Console.WriteLine("随机的旧身份证：" + id15Validator.GenerateRandomNumber());
+
+            //IDValidatorHelper.AddDefaultValidator();
+
             var idValid = IDValidatorHelper.Validate("32021919900101003X", ignoreCheckBit: false);
             Console.WriteLine("身份证验证结果：" + idValid.IsValid);
 
@@ -53,10 +56,11 @@ namespace NumberValidators.TestConsole
             Console.WriteLine();
             Console.WriteLine("***工商注册码/统一社会信用代码***");
             string[] rnArr = { "110108000000016", "91320621MA1MRHG205" };
+            RegistrationNoValidatorHelper.SetValidator(BusinessRegistrationNos.RegistrationNoLength.Eighteen, new RegistrationNo15Validator());
             foreach (var rn in rnArr)
             {
                 var valid = RegistrationNoValidatorHelper.Validate(rn, validLimit: null);
-                Console.WriteLine("{0}验证结果：{1} 长度{2} 行政区划名称({3}) 验证结果类型:{4}", rn, valid.IsValid, valid.RegistrationNoLength, valid.RecognizableArea.FullName, valid);
+                Console.WriteLine("{0}验证结果：{1} 长度{2} 行政区划名称({3}) 验证结果类型:{4}", rn, valid.IsValid, valid.RegistrationNoLength, valid.RecognizableArea?.FullName, valid);
             }
             Console.WriteLine("随机的工商注册码：" + new RegistrationNo15Validator().GenerateRandomNumber());
             Console.WriteLine("随机的统一社会信用代码：" + new RegistrationNo18Validator().GenerateRandomNumber());

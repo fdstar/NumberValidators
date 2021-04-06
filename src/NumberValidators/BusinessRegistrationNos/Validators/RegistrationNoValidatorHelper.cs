@@ -1,5 +1,6 @@
 ﻿using NumberValidators.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,8 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
     /// </summary>
     public static class RegistrationNoValidatorHelper
     {
+        private static readonly ConcurrentDictionary<RegistrationNoLength, IRegistrationNoValidator<RegistrationNoValidationResult>> concurrentDictionary
+            = new ConcurrentDictionary<RegistrationNoLength, IRegistrationNoValidator<RegistrationNoValidationResult>>();
         /// <summary>
         /// 验证工商注册号、统一社会信用代码是否正确
         /// </summary>
@@ -22,8 +25,46 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
             IRegistrationNoValidator<RegistrationNoValidationResult> validator = null;
             var valid = ValidatorHelper.ValidEmpty(code, out RegistrationNoValidationResult result, ErrorMessage.Empty)
                 && ValidatorHelper.ValidLength(code, (int?)validLength, ErrorMessage.LengthOutOfRange, result)
-                && ValidatorHelper.ValidImplement(code, result, "RegistrationNo{0}Validator", ErrorMessage.InvalidImplement, out validator, typeof(IRegistrationNoValidator<>));
+                && ValidImplement(code, result,out validator);
             return validator == null ? result : validator.Validate(code, validLimit);
+        }
+
+        private static bool ValidImplement(string code, RegistrationNoValidationResult result, out IRegistrationNoValidator<RegistrationNoValidationResult> validator)
+        {
+            if (concurrentDictionary.Count > 0)
+            {
+                if (!concurrentDictionary.TryGetValue((RegistrationNoLength)code.Length, out validator))
+                {
+                    result.AddErrorMessage(ErrorMessage.InvalidImplement, code.Length);
+                }
+            }
+            else
+            {
+                ValidatorHelper.ValidImplement(code, result, "RegistrationNo{0}Validator", ErrorMessage.InvalidImplement, out validator, typeof(IRegistrationNoValidator<>));
+            }
+            return validator != null;
+        }
+
+        /// <summary>
+        /// 设置默认的校验规则，注意如果进行了设置，那么将不再进行自动推导，但会调用<see cref="AddDefaultValidator"/>进行默认设置
+        /// </summary>
+        /// <param name="noLength">默认校验实现对应的编号长度</param>
+        /// <param name="validator">默认实现</param>
+        public static void SetValidator(RegistrationNoLength noLength, IRegistrationNoValidator<RegistrationNoValidationResult> validator)
+        {
+            if (concurrentDictionary.Count == 0)
+            {
+                AddDefaultValidator();
+            }
+            concurrentDictionary.AddOrUpdate(noLength, k => null, (k, a) => validator);
+        }
+        /// <summary>
+        /// 添加默认已提供的<see cref="RegistrationNoLength"/>对应实现，用于临时解决core下可能会出现的反射错误
+        /// </summary>
+        public static void AddDefaultValidator()
+        {
+            concurrentDictionary.TryAdd(RegistrationNoLength.Fifteen, new RegistrationNo15Validator());
+            concurrentDictionary.TryAdd(RegistrationNoLength.Eighteen, new RegistrationNo18Validator());
         }
     }
 }
