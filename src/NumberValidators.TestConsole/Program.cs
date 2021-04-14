@@ -56,7 +56,7 @@ namespace NumberValidators.TestConsole
             Console.WriteLine();
             Console.WriteLine("***工商注册码/统一社会信用代码***");
             string[] rnArr = { "110108000000016", "91320621MA1MRHG205" };
-            RegistrationNoValidatorHelper.SetValidator(BusinessRegistrationNos.RegistrationNoLength.Eighteen, new RegistrationNo15Validator());
+            RegistrationNoValidatorHelper.SetValidator(BusinessRegistrationNos.RegistrationNoLength.Fifteen, new RegistrationNo15Validator());
             foreach (var rn in rnArr)
             {
                 var valid = RegistrationNoValidatorHelper.Validate(rn, validLimit: null);

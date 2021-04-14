@@ -12,7 +12,7 @@
 * 随机生成一个符合规则的号码 `string GenerateRandomNumber();`
 * 验证号码是否正确 `T Validate(string number);`
 
-实际验证会在此接口基础上定义额外的规范约束，且每种证件号码均默认提供`ValidatorHelper`类，用于统一验证该类型的证件号码，根据实际调用的`IValidator<out T>`实现，返回的`ValidationResult`也可能会有所不同
+实际验证会在此接口基础上定义额外的规范约束，且每种证件号码均默认提供`ValidatorHelper`类，用于统一验证该类型的证件号码，根据实际调用的`IValidator<out T>`实现，返回的`ValidationResult`也可能会有所不同，所有`Helper`类都提供了`AddDefaultValidator`来解决`Net Core`下反射生成实例会产生异常问题。
 
 PS：如果验证结果`IsValid`为True，那么相应的`ValidationResult`会包含该号码可识别的所有信息，以身份证为例，返回结果会包含**行政区划（即出生登记地）、出生日期、登记序列号、校验位**
 
@@ -24,6 +24,7 @@ PS：如果验证结果`IsValid`为True，那么相应的`ValidationResult`会�
 valid = new ID15Validator().Validate(idNumber); 
 //二代身份证验证
 valid = new ID18Validator().Validate(idNumber); 
+IDValidatorHelper.AddDefaultValidator(); //进行默认注册
 valid = IDValidatorHelper.Validate(idNumber, ignoreCheckBit: false); //无法确认是哪种身份证时可以通过该类进行验证
 ```
 
@@ -47,6 +48,9 @@ valid = RegistrationNoValidatorHelper.Validate(code, validLimit: null); //无法
 
 
 ## Release History
+**2021-04-14**
+- Release v1.0.3 增加电子专票支持，Helper增加注册方法临时处理Core下反射生成实例失败问题
+
 **2019-08-06**
 - Release v1.0.2 增加区块链电子发票支持
 
