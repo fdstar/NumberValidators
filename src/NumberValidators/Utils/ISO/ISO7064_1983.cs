@@ -8,7 +8,7 @@ namespace NumberValidators.Utils.ISO
     /// <summary>
     /// ISO7064_1983
     /// </summary>
-    public class ISO7064_1983
+    public static class ISO7064_1983
     {
         /// <summary>
         /// 根据ISO7064:1983.MOD 11,2标准获取余

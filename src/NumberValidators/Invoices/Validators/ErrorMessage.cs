@@ -8,7 +8,7 @@ namespace NumberValidators.Invoices.Validators
     /// <summary>
     /// 错误描述类
     /// </summary>
-    internal class ErrorMessage
+    internal static class ErrorMessage
     {
         /// <summary>
         /// 发票代码为空

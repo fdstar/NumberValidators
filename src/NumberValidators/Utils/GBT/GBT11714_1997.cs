@@ -10,20 +10,20 @@ namespace NumberValidators.Utils.GBT
     /// <summary>
     /// 国标GB/T 11714-1997
     /// </summary>
-    public class GBT11714_1997
+    public static class GBT11714_1997
     {
         /// <summary>
         /// 加权因子
         /// </summary>
-        public static readonly int[] WeightingFactors = { 3, 7, 9, 10, 5, 8, 4, 2 };
+        private static readonly int[] WeightingFactors = { 3, 7, 9, 10, 5, 8, 4, 2 };
         /// <summary>
         /// 校验码
         /// </summary>
-        public static readonly char[] CheckBits = new char[11];
+        private static readonly char[] CheckBits = new char[11];
         /// <summary>
         /// 本体代码及其对应的代码字符数值
         /// </summary>
-        public static readonly Dictionary<char, int> CodeDictionary = new Dictionary<char, int>();
+        private static readonly Dictionary<char, int> CodeDictionary = new Dictionary<char, int>();
         static GBT11714_1997()
         {
             for (var i = 0; i <= 35; i++)

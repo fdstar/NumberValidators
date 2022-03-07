@@ -7,7 +7,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
     /// <summary>
     /// 错误提示信息类
     /// </summary>
-    internal class ErrorMessage
+    internal static class ErrorMessage
     {
         /// <summary>
         /// 字符串为空

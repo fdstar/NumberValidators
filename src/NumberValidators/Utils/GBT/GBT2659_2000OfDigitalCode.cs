@@ -18,7 +18,7 @@ namespace NumberValidators.Utils.GBT
         /// <summary>
         /// 基础数据字典
         /// </summary>
-        private static Dictionary<string, NationCode> Dictionary;
+        private Dictionary<string, NationCode> Dictionary;
         private static object _lockObj = new object();
         /// <summary>
         /// 获取字典

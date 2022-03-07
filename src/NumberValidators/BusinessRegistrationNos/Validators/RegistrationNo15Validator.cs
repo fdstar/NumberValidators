@@ -42,7 +42,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// <summary>
         /// 工商行政管理机关代码
         /// </summary>
-        private class AdministrationValidationDictionary : IValidationDictionary<int, string>
+        private sealed class AdministrationValidationDictionary : IValidationDictionary<int, string>
         {
             private AdministrationValidationDictionary() { }
             /// <summary>

@@ -7,7 +7,7 @@ namespace NumberValidators.Utils.GBT
     /// <summary>
     /// 国标GB/T 17710-1999
     /// </summary>
-    public class GBT17710_1999
+    public static class GBT17710_1999
     {
         /// <summary>
         /// 按GB/T 17710-1999中定义的ISO 7064 MOD 11,10算法

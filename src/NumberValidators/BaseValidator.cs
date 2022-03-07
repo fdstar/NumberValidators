@@ -38,8 +38,10 @@ namespace NumberValidators
         /// <returns></returns>
         public virtual T Validate(string number)
         {
-            var valid = ValidatorHelper.ValidEmpty(number, out T result, EmptyErrorMessage)
-                && this.ValidWithPattern(number, result);
+            if (ValidatorHelper.ValidEmpty(number, out T result, EmptyErrorMessage))
+            {
+                this.ValidWithPattern(number, result);
+            }
             return result;
         }
         /// <summary>
