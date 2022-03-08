@@ -7,17 +7,17 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
 {
     public class RegistrationNo18ValidatorTests
     {
+        private readonly RegistrationNo18Validator validator = new RegistrationNo18Validator();
+
         [Fact]
         public void Default_Prop()
         {
-            var validator = new RegistrationNo18Validator();
             Assert.Equal(RegistrationNoLength.Eighteen, validator.RegistrationNoLength);
         }
 
         [Fact]
         public void GenerateRandomNumber_Length_Should_Equals_18()
         {
-            var validator = new RegistrationNo18Validator();
             var number = validator.GenerateRandomNumber();
             Assert.Equal(18, number.Length);
         }
@@ -25,29 +25,27 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
         [Fact]
         public void GenerateRegistrationNo_Length_Should_Equals_18()
         {
-            var validator = new RegistrationNo18Validator();
             var number = validator.GenerateRegistrationNo(310104, ManagementCode.Business, ManagementKindCode.Foundation);
             Assert.Equal(18, number.Length);
         }
 
-        [Fact]
-        public void Validate_Error_With_CheckBit()
+        [Theory]
+        [InlineData("91320621MA1MRHG207")]
+        public void Validate_Error_With_CheckBit(string no)
         {
-            var number = "91320621MA1MRHG207";
-            IValidator<RegistrationNo18ValidationResult> validator = new RegistrationNo18Validator();
-            var result = validator.Validate(number);
+            var valid = (IValidator<RegistrationNo18ValidationResult>)validator;
+            var result = valid.Validate(no);
             Assert.False(result.IsValid);
-            Assert.Equal(number, result.Number);
+            Assert.Equal(no, result.Number);
             Assert.NotEmpty(result.Errors);
             Assert.True(result.Errors.Contains("´íÎóµÄÐ£ÑéÂë"));
         }
 
-        [Fact]
-        public void Validate_Correct()
+        [Theory]
+        [InlineData("91320621MA1MRHG205")]
+        public void Validate_Correct(string no)
         {
-            var number = "91320621MA1MRHG205";
-            var validator = new RegistrationNo18Validator();
-            var result = validator.Validate(number);
+            var result = validator.Validate(no);
             Assert.True(result.IsValid);
             Assert.Empty(result.Errors);
             Assert.NotNull(result.RecognizableArea);

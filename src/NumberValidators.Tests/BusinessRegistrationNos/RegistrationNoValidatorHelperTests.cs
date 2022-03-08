@@ -7,46 +7,45 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
 {
     public class RegistrationNoValidatorHelperTests
     {
-        [Fact]
-        public void Valid_No_Is_Empty()
+        public RegistrationNoValidatorHelperTests()
         {
-            string no = null;
+            RegistrationNoValidatorHelper.ResetDefaultValidator();
+        }
+        [Theory]
+        [InlineData((string)null)]
+        [InlineData("123456789")]
+        public void Valid_No_Is_Empty_Or_Not_Supported_Length(string no)
+        {
             var result = RegistrationNoValidatorHelper.Validate(no);
             Assert.IsType<RegistrationNoValidationResult>(result);
             Assert.False(result.IsValid);
         }
 
-        [Fact]
-        public void Valid_Not_Supported_Length()
+        [Theory]
+        [InlineData("450703583197518")]
+        [InlineData("440783763666398")]
+        public void Valid_Correct_With_Length_15(string no)
         {
-            string no = "123456789";
-            var result = RegistrationNoValidatorHelper.Validate(no);
-            Assert.IsType<RegistrationNoValidationResult>(result);
-            Assert.False(result.IsValid);
-        }
-
-        [Fact]
-        public void Valid_Correct_With_Length_15()
-        {
-            string no = "110108000000016";
             var result = RegistrationNoValidatorHelper.Validate(no);
             Assert.IsType<RegistrationNo15ValidationResult>(result);
             Assert.True(result.IsValid);
+            var ret = (RegistrationNo15ValidationResult)result;
+            Assert.True(ret.EnterpriseType > EnterpriseType.Domestic);
         }
 
-        [Fact]
-        public void Valid_Correct_With_Length_18()
+        [Theory]
+        [InlineData("91320621MA1MRHG205")]
+        public void Valid_Correct_With_Length_18(string no)
         {
-            string no = "91320621MA1MRHG205";
             var result = RegistrationNoValidatorHelper.Validate(no);
             Assert.IsType<RegistrationNo18ValidationResult>(result);
             Assert.True(result.IsValid);
         }
 
-        [Fact]
-        public void Set_Another_Validator_To_Replace_15_And_Reset()
+        [Theory]
+        [InlineData("110108000000016")]
+        public void Set_Another_Validator_To_Replace_15_And_Reset(string no)
         {
-            string no = "110108000000016";
             RegistrationNoValidatorHelper.SetValidator(RegistrationNoLength.Fifteen, new NotImplementedRegistrationNo15Validator());
             Assert.Throws<NotImplementedException>(() => RegistrationNoValidatorHelper.Validate(no));
             RegistrationNoValidatorHelper.ResetDefaultValidator();
@@ -54,7 +53,7 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
         }
     }
 
-    internal class NotImplementedRegistrationNo15Validator : IRegistrationNoValidator<RegistrationNoValidationResult>
+    internal sealed class NotImplementedRegistrationNo15Validator : IRegistrationNoValidator<RegistrationNoValidationResult>
     {
         public IValidationDictionary<int, string> Dictionary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

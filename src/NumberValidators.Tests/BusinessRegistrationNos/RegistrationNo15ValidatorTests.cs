@@ -7,11 +7,13 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
 {
     public class RegistrationNo15ValidatorTests
     {
+        private readonly RegistrationNo15Validator validator = new RegistrationNo15Validator();
+
         [Fact]
         public void Default_Prop()
         {
-            var validator = new RegistrationNo15Validator();
             Assert.Equal(RegistrationNoLength.Fifteen, validator.RegistrationNoLength);
+            validator.AdministrationDictionary = null;
             Assert.NotNull(validator.AdministrationDictionary);
             Assert.True(validator.AdministrationDictionary.GetDictionary().ContainsKey(100000));
         }
@@ -19,7 +21,6 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
         [Fact]
         public void GenerateRandomNumber_Length_Should_Equals_15()
         {
-            var validator = new RegistrationNo15Validator();
             var number = validator.GenerateRandomNumber();
             Assert.Equal(15, number.Length);
         }
@@ -27,29 +28,27 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
         [Fact]
         public void GenerateRegistrationNo_Length_Should_Equals_15()
         {
-            var validator = new RegistrationNo15Validator();
-            var number = validator.GenerateRegistrationNo(310104, EnterpriseType.Individual);
+            var number = validator.GenerateRegistrationNo(310104, EnterpriseType.Foreign);
             Assert.Equal(15, number.Length);
         }
 
-        [Fact]
-        public void Validate_Error_With_CheckBit()
+        [Theory]
+        [InlineData("110108000000017")]
+        public void Validate_Error_With_CheckBit(string no)
         {
-            var number = "110108000000017";
-            IValidator<RegistrationNo15ValidationResult> validator = new RegistrationNo15Validator();
-            var result = validator.Validate(number);
+            var valid = (IValidator<RegistrationNo15ValidationResult>)validator;
+            var result = valid.Validate(no);
             Assert.False(result.IsValid);
-            Assert.Equal(number, result.Number);
+            Assert.Equal(no, result.Number);
             Assert.NotEmpty(result.Errors);
             Assert.True(result.Errors.Contains("´íÎóµÄÐ£ÑéÂë"));
         }
 
-        [Fact]
-        public void Validate_Correct()
+        [Theory]
+        [InlineData("110108000000016")]
+        public void Validate_Correct(string no)
         {
-            var number = "110108000000016";
-            var validator = new RegistrationNo15Validator();
-            var result = validator.Validate(number);
+            var result = validator.Validate(no);
             Assert.True(result.IsValid);
             Assert.Empty(result.Errors);
             Assert.NotNull(result.RecognizableArea);
