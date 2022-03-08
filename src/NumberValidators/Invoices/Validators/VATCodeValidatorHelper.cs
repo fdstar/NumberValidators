@@ -25,7 +25,7 @@ namespace NumberValidators.Invoices.Validators
         public static VATCodeValidationResult Validate(string vatCode, VATKind? kind = null, VATLength? length = null, ushort minYear = 2012)
         {
             IVATCodeValidator<VATCodeValidationResult> validator = null;
-            var valid = ValidatorHelper.ValidEmpty(vatCode, out VATCodeValidationResult result, ErrorMessage.Empty)
+            _ = ValidatorHelper.ValidEmpty(vatCode, out VATCodeValidationResult result, ErrorMessage.Empty)
                 && ValidatorHelper.ValidLength(vatCode, (int?)length, ErrorMessage.LengthOutOfRange, result)
                 && ValidImplement(vatCode, result, out validator);
             return validator == null ? result : validator.Validate(vatCode, kind, minYear);

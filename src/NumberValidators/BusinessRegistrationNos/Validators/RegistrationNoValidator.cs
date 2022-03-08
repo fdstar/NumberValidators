@@ -69,7 +69,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         public TResult Validate(string code, AreaValidLimit? validLimit = null)
         {
             var result = base.Validate(code);
-            var valid = result.IsValid
+            _ = result.IsValid
                 && this.ValidArea(code, validLimit, result)
                 && this.ValidCheckBit(code, result)
                 && this.ValidOtherInfo(code, result);

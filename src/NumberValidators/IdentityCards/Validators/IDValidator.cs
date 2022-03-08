@@ -94,7 +94,7 @@ namespace NumberValidators.IdentityCards.Validators
         public IDValidationResult Validate(string idNumber, ushort minYear = 0, AreaValidLimit validLimit = AreaValidLimit.Province, bool ignoreCheckBit = false)
         {
             var result = base.Validate(idNumber);
-            var valid = result.IsValid
+            _ = result.IsValid
                 && this.ValidBirthday(idNumber, minYear, result)
                 && this.ValidArea(idNumber, validLimit, result)
                 && this.ValidCheckBit(idNumber, ignoreCheckBit, result)

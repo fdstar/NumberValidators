@@ -43,7 +43,7 @@ namespace NumberValidators.IdentityCards.Validators
         public static IDValidationResult Validate(this string idNumber, ushort minYear = 0, IDLength? validLength = null, AreaValidLimit validLimit = AreaValidLimit.Province, bool ignoreCheckBit = false)
         {
             IIDValidator validator = null;
-            var valid = ValidatorHelper.ValidEmpty(idNumber, out IDValidationResult result, ErrorMessage.Empty)
+            _ = ValidatorHelper.ValidEmpty(idNumber, out IDValidationResult result, ErrorMessage.Empty)
                 && ValidatorHelper.ValidLength(idNumber, (int?)validLength, ErrorMessage.LengthOutOfRange, result)
                 && ValidImplement(idNumber, result, out validator);
             return validator == null ? result : validator.Validate(idNumber, minYear, validLimit, ignoreCheckBit);

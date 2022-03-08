@@ -16,8 +16,9 @@ namespace NumberValidators.TestConsole
             Console.WriteLine("随机的新身份证：" + id18Validator.GenerateRandomNumber());
             var id15Validator = new ID15Validator();
             Console.WriteLine("随机的旧身份证：" + id15Validator.GenerateRandomNumber());
-
-            //IDValidatorHelper.AddDefaultValidator();
+#if DEBUG
+            IDValidatorHelper.AddDefaultValidator();
+#endif
 
             var idValid = IDValidatorHelper.Validate("32021919900101003X", ignoreCheckBit: false);
             Console.WriteLine("身份证验证结果：" + idValid.IsValid);

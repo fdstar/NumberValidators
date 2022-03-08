@@ -94,7 +94,7 @@ namespace NumberValidators.Invoices.Validators
         public virtual TResult Validate(string vatCode, VATKind? kind = null, ushort minYear = 2012)
         {
             var result = base.Validate(vatCode);
-            var valid = result.IsValid
+            _ = result.IsValid
                 && this.ValidYear(result.Number, minYear, result)
                 && this.ValidVATKind(result.Number, kind, result)
                 && this.ValidArea(result.Number, result)

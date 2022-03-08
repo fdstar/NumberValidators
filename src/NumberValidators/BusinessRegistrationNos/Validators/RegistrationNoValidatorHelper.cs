@@ -23,7 +23,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         public static RegistrationNoValidationResult Validate(this string code, RegistrationNoLength? validLength = null, AreaValidLimit? validLimit = null)
         {
             IRegistrationNoValidator<RegistrationNoValidationResult> validator = null;
-            var valid = ValidatorHelper.ValidEmpty(code, out RegistrationNoValidationResult result, ErrorMessage.Empty)
+            _ = ValidatorHelper.ValidEmpty(code, out RegistrationNoValidationResult result, ErrorMessage.Empty)
                 && ValidatorHelper.ValidLength(code, (int?)validLength, ErrorMessage.LengthOutOfRange, result)
                 && ValidImplement(code, result, out validator);
             return validator == null ? result : validator.Validate(code, validLimit);
