@@ -25,7 +25,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
             IRegistrationNoValidator<RegistrationNoValidationResult> validator = null;
             var valid = ValidatorHelper.ValidEmpty(code, out RegistrationNoValidationResult result, ErrorMessage.Empty)
                 && ValidatorHelper.ValidLength(code, (int?)validLength, ErrorMessage.LengthOutOfRange, result)
-                && ValidImplement(code, result,out validator);
+                && ValidImplement(code, result, out validator);
             return validator == null ? result : validator.Validate(code, validLimit);
         }
 
@@ -46,7 +46,7 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         }
 
         /// <summary>
-        /// 设置默认的校验规则，注意如果进行了设置，那么将不再进行自动推导，但会调用<see cref="AddDefaultValidator"/>进行默认设置
+        /// 设置默认的校验规则，注意如果进行了设置，那么将不再进行自动推导，但会调用<see cref="ResetDefaultValidator"/>进行默认设置
         /// </summary>
         /// <param name="noLength">默认校验实现对应的编号长度</param>
         /// <param name="validator">默认实现</param>
@@ -54,17 +54,17 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         {
             if (concurrentDictionary.Count == 0)
             {
-                AddDefaultValidator();
+                ResetDefaultValidator();
             }
             concurrentDictionary.AddOrUpdate(noLength, k => null, (k, a) => validator);
         }
         /// <summary>
-        /// 添加默认已提供的<see cref="RegistrationNoLength"/>对应实现，用于临时解决core下可能会出现的反射错误
+        /// 添加或重置默认已提供的<see cref="RegistrationNoLength"/>对应实现，用于临时解决core下可能会出现的反射错误
         /// </summary>
-        public static void AddDefaultValidator()
+        public static void ResetDefaultValidator()
         {
-            concurrentDictionary.TryAdd(RegistrationNoLength.Fifteen, new RegistrationNo15Validator());
-            concurrentDictionary.TryAdd(RegistrationNoLength.Eighteen, new RegistrationNo18Validator());
+            concurrentDictionary.AddOrUpdate(RegistrationNoLength.Fifteen, k => new RegistrationNo15Validator(), (k, a) => new RegistrationNo15Validator());
+            concurrentDictionary.AddOrUpdate(RegistrationNoLength.Eighteen, k => new RegistrationNo18Validator(), (k, a) => new RegistrationNo18Validator());
         }
     }
 }
