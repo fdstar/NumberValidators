@@ -22,8 +22,8 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         /// 加权因子
         /// </summary>
         internal static readonly int[] WeightingFactors = { 1, 3, 9, 27, 19, 26, 16, 17, 20, 29, 25, 13, 8, 24, 10, 30, 28 };
-        private static readonly IEnumerable<ManagementCode> ManagementCodes = Enum.GetValues(typeof(ManagementCode)).Cast<ManagementCode>();
-        private static readonly IEnumerable<int> ManagementKindCodes = Enum.GetValues(typeof(ManagementKindCode)).Cast<ManagementKindCode>().Select(c => (int)c);
+        private static readonly HashSet<ManagementCode> ManagementCodes = new HashSet<ManagementCode>(Enum.GetValues(typeof(ManagementCode)).Cast<ManagementCode>());
+        private static readonly HashSet<int> ManagementKindCodes = new HashSet<int>(Enum.GetValues(typeof(ManagementKindCode)).Cast<ManagementKindCode>().Select(c => (int)c));
         #endregion
 
         #region props
@@ -62,13 +62,23 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         protected override string GenerateRegistrationNo(string areaNumber)
         {
             ManagementCode code = ManagementCodes.OrderBy(g => Guid.NewGuid()).First();
+            return this.GenerateRegistrationNo(Convert.ToInt32(areaNumber), code);
+        }
+        /// <summary>
+        /// 生成统一社会信用代码
+        /// </summary>
+        /// <param name="areaNumber"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public string GenerateRegistrationNo(int areaNumber, ManagementCode code)
+        {
             ManagementKindCode kind = ManagementKindCode.NonSpecific;
             var query = ManagementKindCodes.Where(c => c / 100 == (int)code);
             if (query.Any())
             {
                 kind = (ManagementKindCode)query.OrderBy(g => Guid.NewGuid()).First();
             }
-            return this.GenerateRegistrationNo(areaNumber, code, kind);
+            return this.GenerateRegistrationNo(areaNumber.ToString().PadRight(6, '0').Substring(0, 6), code, kind);
         }
         /// <summary>
         /// 生成统一社会信用代码
@@ -135,22 +145,33 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         }
         private bool ValidManagementCode(string code, RegistrationNo18ValidationResult result)
         {
-            var valid = Enum.TryParse(((int)code[0]).ToString(), out ManagementCode mc);
-            result.ManagementCode = mc;
+            var valid = Enum.TryParse(((int)code[0]).ToString(), out ManagementCode mc) && ManagementCodes.Contains(mc);
             if (!valid)
             {
                 result.AddErrorMessage(ErrorMessage.InvalidManagement);
+            }
+            else
+            {
+                result.ManagementCode = mc;
             }
             return valid;
         }
         private bool ValidManagementKindCode(string code, RegistrationNo18ValidationResult result)
         {
-            var valid = Enum.TryParse(((int)result.ManagementCode * 100 + (int)code[1]).ToString(), out ManagementKindCode mkc)
-                || (int)code[1] == (int)ManagementKindCode.NonSpecific;
-            result.ManagementKindCode = mkc == 0 ? ManagementKindCode.NonSpecific : mkc;
+            var valid = (Enum.TryParse(((int)result.ManagementCode * 100 + (int)code[1]).ToString(), out ManagementKindCode mkc)
+                && ManagementKindCodes.Contains((int)mkc));
+            if (!valid && (int)code[1] == (int)ManagementKindCode.NonSpecific)
+            {
+                valid = true;
+                mkc = ManagementKindCode.NonSpecific;
+            }
             if (!valid)
             {
                 result.AddErrorMessage(ErrorMessage.InvalidManagementKind);
+            }
+            else
+            {
+                result.ManagementKindCode = mkc;
             }
             return valid;
         }

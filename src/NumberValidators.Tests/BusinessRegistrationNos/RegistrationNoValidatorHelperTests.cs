@@ -7,16 +7,12 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
 {
     public class RegistrationNoValidatorHelperTests
     {
-        public RegistrationNoValidatorHelperTests()
-        {
-            RegistrationNoValidatorHelper.ResetDefaultValidator();
-        }
         [Theory]
         [InlineData((string)null)]
         [InlineData("123456789")]
         public void Valid_No_Is_Empty_Or_Not_Supported_Length(string no)
         {
-            var result = RegistrationNoValidatorHelper.Validate(no);
+            var result = RegistrationNoValidatorHelper.Validate(no, 9);
             Assert.IsType<RegistrationNoValidationResult>(result);
             Assert.False(result.IsValid);
         }
@@ -46,7 +42,8 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
         [InlineData("110108000000016")]
         public void Set_Another_Validator_To_Replace_15_And_Reset(string no)
         {
-            RegistrationNoValidatorHelper.SetValidator(RegistrationNoLength.Fifteen, new NotImplementedRegistrationNo15Validator());
+            Assert.Throws<ArgumentNullException>(() => RegistrationNoValidatorHelper.SetValidator((int)RegistrationNoLength.Fifteen, null));
+            RegistrationNoValidatorHelper.SetValidator((int)RegistrationNoLength.Fifteen, new NotImplementedRegistrationNo15Validator());
             Assert.Throws<NotImplementedException>(() => RegistrationNoValidatorHelper.Validate(no));
             RegistrationNoValidatorHelper.ResetDefaultValidator();
             Assert.True(RegistrationNoValidatorHelper.Validate(no).IsValid);

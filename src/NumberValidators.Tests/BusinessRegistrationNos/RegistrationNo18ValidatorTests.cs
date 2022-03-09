@@ -25,20 +25,24 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
         [Fact]
         public void GenerateRegistrationNo_Length_Should_Equals_18()
         {
-            var number = validator.GenerateRegistrationNo(310104, ManagementCode.Business, ManagementKindCode.Foundation);
+            var number = validator.GenerateRegistrationNo(310104, ManagementCode.Business);
+            Assert.Equal(18, number.Length);
+            number = validator.GenerateRegistrationNo(310104, ManagementCode.Business, ManagementKindCode.Foundation);
             Assert.Equal(18, number.Length);
         }
 
         [Theory]
         [InlineData("91320621MA1MRHG207")]
-        public void Validate_Error_With_CheckBit(string no)
+        [InlineData("A1320621MA1MRHG217")]
+        [InlineData("B7320621MA1MRHG20G")]
+        [InlineData("L8320621MA1MRHG204")]
+        public void Validate_Error(string no)
         {
             var valid = (IValidator<RegistrationNo18ValidationResult>)validator;
             var result = valid.Validate(no);
             Assert.False(result.IsValid);
             Assert.Equal(no, result.Number);
             Assert.NotEmpty(result.Errors);
-            Assert.True(result.Errors.Contains("´íÎóµÄÐ£ÑéÂë"));
         }
 
         [Theory]

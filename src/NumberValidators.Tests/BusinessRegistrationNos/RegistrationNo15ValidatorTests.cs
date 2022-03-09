@@ -34,14 +34,17 @@ namespace NumberValidators.Tests.BusinessRegistrationNos
 
         [Theory]
         [InlineData("110108000000017")]
-        public void Validate_Error_With_CheckBit(string no)
+        [InlineData("191108000000014")]
+        public void Validate_Error(string no)
         {
             var valid = (IValidator<RegistrationNo15ValidationResult>)validator;
             var result = valid.Validate(no);
             Assert.False(result.IsValid);
             Assert.Equal(no, result.Number);
             Assert.NotEmpty(result.Errors);
-            Assert.True(result.Errors.Contains("´íÎóµÄÐ£ÑéÂë"));
+            result = validator.Validate(no, AreaValidLimit.City);
+            Assert.False(result.IsValid);
+            Assert.NotEmpty(result.Errors);
         }
 
         [Theory]

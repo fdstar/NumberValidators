@@ -24,10 +24,14 @@ namespace NumberValidators.Utils
             string key = string.Format("{0}:{1}", interfaceType.FullName, className);
             return concurrentDictionary.GetOrAdd(key, _ =>
             {
-                var type = AppDomain.CurrentDomain.GetAssemblies()
+                try
+                {
+                    var type = AppDomain.CurrentDomain.GetAssemblies()
                      .SelectMany(a => a.GetTypes().Where(t => t.Name.Equals(className) && t.GetInterface(interfaceType.Name) != null))
                      .FirstOrDefault();
-                return type?.Assembly.CreateInstance(type.FullName);
+                    return type?.Assembly.CreateInstance(type.FullName);
+                }
+                catch { return null; }
             });
         }
         /// <summary>
