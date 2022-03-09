@@ -158,8 +158,8 @@ namespace NumberValidators.BusinessRegistrationNos.Validators
         }
         private bool ValidManagementKindCode(string code, RegistrationNo18ValidationResult result)
         {
-            var valid = (Enum.TryParse(((int)result.ManagementCode * 100 + (int)code[1]).ToString(), out ManagementKindCode mkc)
-                && ManagementKindCodes.Contains((int)mkc));
+            var valid = Enum.TryParse(((int)result.ManagementCode * 100 + (int)code[1]).ToString(), out ManagementKindCode mkc)
+                && ManagementKindCodes.Contains((int)mkc);
             if (!valid && (int)code[1] == (int)ManagementKindCode.NonSpecific)
             {
                 valid = true;
