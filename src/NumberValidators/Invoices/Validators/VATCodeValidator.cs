@@ -14,6 +14,10 @@ namespace NumberValidators.Invoices.Validators
     {
         #region props
         /// <summary>
+        /// 号码长度
+        /// </summary>
+        public abstract VATLength VATLength { get; }
+        /// <summary>
         /// 默认基础数据字典
         /// </summary>
         protected override IValidationDictionary<int, string> DefaultDictionary => GBT2260OnlyProvince.Singleton;
@@ -94,11 +98,15 @@ namespace NumberValidators.Invoices.Validators
         public virtual TResult Validate(string vatCode, VATKind? kind = null, ushort minYear = 2012)
         {
             var result = base.Validate(vatCode);
-            _ = result.IsValid
+            var valid = result.IsValid
                 && this.ValidYear(result.Number, minYear, result)
                 && this.ValidVATKind(result.Number, kind, result)
                 && this.ValidArea(result.Number, result)
                 && this.ValidOtherInfo(result.Number, result);
+            if (valid)
+            {
+                result.VATLength = this.VATLength;
+            }
             return result;
         }
         #endregion

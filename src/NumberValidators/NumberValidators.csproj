@@ -20,4 +20,9 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <DefineConstants>NET40</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Utils\GBT\GBT2659_2000OfDigitalCode.cs" />
+    <Compile Remove="Utils\GBT\NationCode.cs" />
+  </ItemGroup>
 </Project>

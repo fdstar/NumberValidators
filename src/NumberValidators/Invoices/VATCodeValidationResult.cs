@@ -11,6 +11,10 @@ namespace NumberValidators.Invoices
     public class VATCodeValidationResult : ValidationResult
     {
         /// <summary>
+        /// 号码长度
+        /// </summary>
+        public VATLength VATLength { get; internal set; }
+        /// <summary>
         /// 行政区划代码
         /// </summary>
         public int AreaNumber { get; internal set; }

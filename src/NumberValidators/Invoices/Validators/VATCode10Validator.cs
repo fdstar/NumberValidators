@@ -33,6 +33,10 @@ namespace NumberValidators.Invoices.Validators
             {VATKind.Transport ,3},
         };
         /// <summary>
+        /// 号码长度
+        /// </summary>
+        public override VATLength VATLength => VATLength.Ten;
+        /// <summary>
         /// 支持的增值税发票类型
         /// </summary>
         protected override IEnumerable<VATKind> SupportKind => _duplicateDic.Keys;

@@ -39,6 +39,10 @@ namespace NumberValidators.Invoices.Validators
             {"05",VATKind.Plain},
         };
         /// <summary>
+        /// 号码长度
+        /// </summary>
+        public override VATLength VATLength => VATLength.Twelve;
+        /// <summary>
         /// 支持的增值税发票类型
         /// </summary>
         protected override IEnumerable<VATKind> SupportKind => _kindDic.Values.Distinct();
@@ -57,6 +61,10 @@ namespace NumberValidators.Invoices.Validators
         /// <returns></returns>
         protected override string GenerateVATCode(string areaNumber, string year, ushort batch, VATKind kind, ElectronicVATKind? electKind)
         {
+            if (electKind.HasValue && kind != VATKind.Electronic)
+            {
+                throw new ArgumentException($"{nameof(kind)} must be 'Electronic' while {nameof(electKind)} exist");
+            }
             var query = _kindDic.Where(kv => kv.Value == kind);
             if (!query.Any())
             {

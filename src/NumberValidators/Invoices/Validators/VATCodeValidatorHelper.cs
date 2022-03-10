@@ -11,8 +11,13 @@ namespace NumberValidators.Invoices.Validators
     /// </summary>
     public static class VATCodeValidatorHelper
     {
-        private static readonly ConcurrentDictionary<VATLength, IVATCodeValidator<VATCodeValidationResult>> concurrentDictionary
-            = new ConcurrentDictionary<VATLength, IVATCodeValidator<VATCodeValidationResult>>();
+        private static readonly ConcurrentDictionary<int, IVATCodeValidator<VATCodeValidationResult>> concurrentDictionary
+            = new ConcurrentDictionary<int, IVATCodeValidator<VATCodeValidationResult>>();
+
+        static VATCodeValidatorHelper()
+        {
+            ResetDefaultValidator();
+        }
 
         /// <summary>
         /// 验证当前增值税发票代码是否正确
@@ -22,51 +27,42 @@ namespace NumberValidators.Invoices.Validators
         /// <param name="length">发票长度</param>
         /// <param name="minYear">最小年份</param>
         /// <returns></returns>
-        public static VATCodeValidationResult Validate(string vatCode, VATKind? kind = null, VATLength? length = null, ushort minYear = 2012)
+        public static VATCodeValidationResult Validate(string vatCode, VATKind? kind = null, int? length = null, ushort minYear = 2012)
         {
             IVATCodeValidator<VATCodeValidationResult> validator = null;
             _ = ValidatorHelper.ValidEmpty(vatCode, out VATCodeValidationResult result, ErrorMessage.Empty)
-                && ValidatorHelper.ValidLength(vatCode, (int?)length, ErrorMessage.LengthOutOfRange, result)
+                && ValidatorHelper.ValidLength(vatCode, length, ErrorMessage.LengthOutOfRange, result)
                 && ValidImplement(vatCode, result, out validator);
             return validator == null ? result : validator.Validate(vatCode, kind, minYear);
         }
 
         private static bool ValidImplement(string code, VATCodeValidationResult result, out IVATCodeValidator<VATCodeValidationResult> validator)
         {
-            if (concurrentDictionary.Count > 0)
-            {
-                if (!concurrentDictionary.TryGetValue((VATLength)code.Length, out validator))
-                {
-                    result.AddErrorMessage(ErrorMessage.InvalidImplement, code.Length);
-                }
-            }
-            else
-            {
-                ValidatorHelper.ValidImplement(code, result, "VATCode{0}Validator", ErrorMessage.InvalidImplement, out validator, typeof(IVATCodeValidator<>));
-            }
+            _ = concurrentDictionary.TryGetValue(code.Length, out validator)
+                || ValidatorHelper.ValidImplement(code, result, "VATCode{0}Validator", ErrorMessage.InvalidImplement, out validator, typeof(IVATCodeValidator<>));
             return validator != null;
         }
 
         /// <summary>
-        /// 设置默认的校验规则，注意如果进行了设置，那么将不再进行自动推导，但会调用<see cref="AddDefaultValidator"/>进行默认设置
+        /// 设置默认的校验规则
         /// </summary>
         /// <param name="vatLength">默认校验实现对应的编号长度</param>
         /// <param name="validator">默认实现</param>
-        public static void SetValidator(VATLength vatLength, IVATCodeValidator<VATCodeValidationResult> validator)
+        public static void SetValidator(int vatLength, IVATCodeValidator<VATCodeValidationResult> validator)
         {
-            if (concurrentDictionary.Count == 0)
+            if (validator == null)
             {
-                AddDefaultValidator();
+                throw new ArgumentNullException(nameof(validator));
             }
-            concurrentDictionary.AddOrUpdate(vatLength, k => null, (k, a) => validator);
+            concurrentDictionary.AddOrUpdate(vatLength, k => validator, (k, a) => validator);
         }
         /// <summary>
         /// 添加默认已提供的<see cref="VATLength"/>对应实现，用于临时解决core下可能会出现的反射错误
         /// </summary>
-        public static void AddDefaultValidator()
+        public static void ResetDefaultValidator()
         {
-            concurrentDictionary.TryAdd(VATLength.Ten, new VATCode10Validator());
-            concurrentDictionary.TryAdd(VATLength.Twelve, new VATCode12Validator());
+            concurrentDictionary.AddOrUpdate((int)VATLength.Ten, k => new VATCode10Validator(), (k, a) => new VATCode10Validator());
+            concurrentDictionary.AddOrUpdate((int)VATLength.Twelve, k => new VATCode12Validator(), (k, a) => new VATCode12Validator());
         }
     }
 }
