@@ -62,6 +62,8 @@ namespace NumberValidators.Tests.IdentityCards
             Assert.Equal(320219, result.AreaNumber);
             Assert.Equal(003, result.Sequence);
             Assert.Equal('X', result.CheckBit);
+            Assert.Equal("江苏省无锡市", result.RecognizableArea.FullName);
+            Assert.Equal("江苏省", result.RecognizableArea.Parent.Name);
         }
     }
 }

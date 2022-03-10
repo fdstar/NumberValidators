@@ -21,7 +21,11 @@ namespace NumberValidators.Utils
             //否则的话，可以每期GBT2260标准都如现在一样，设置对应的类，然后按出生日期确定算法从这些集合中找到对应的区域编号
             Area area = null;
             Area lastArea = null;
-            var dic = dictionary.GetDictionary();
+            var dic = dictionary?.GetDictionary();
+            if (dic == null)
+            {
+                throw new ArgumentNullException(nameof(dictionary));
+            }
             while (code > 0)
             {
                 if (code < 10)

@@ -52,6 +52,7 @@ namespace NumberValidators
         /// <summary>
         /// 父级区域
         /// </summary>
+        /// 
         public Area Parent { get; internal set; }
 
         /// <summary>
