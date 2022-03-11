@@ -1,4 +1,4 @@
-using NumberValidators.Invoices;
+ï»¿using NumberValidators.Invoices;
 using NumberValidators.Invoices.Validators;
 using System;
 using Xunit;
@@ -48,7 +48,7 @@ namespace NumberValidators.Tests
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "<¹ÒÆð>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "<æŒ‚èµ·>")]
     internal sealed class NotImplementedVATCodeValidator : IVATCodeValidator<VATCodeValidationResult>
     {
         public IValidationDictionary<int, string> Dictionary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

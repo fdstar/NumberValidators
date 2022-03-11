@@ -1,4 +1,4 @@
-using NumberValidators.Invoices;
+ï»¿using NumberValidators.Invoices;
 using NumberValidators.Invoices.Validators;
 using System;
 using Xunit;
@@ -50,7 +50,7 @@ namespace NumberValidators.Tests
             Assert.Empty(result.Errors);
             Assert.Equal(VATLength.Ten, result.VATLength);
             Assert.Equal(3100, result.AreaNumber);
-            Assert.Equal("ÉÏº£ÊÐ", result.AreaName);
+            Assert.Equal("ä¸Šæµ·å¸‚", result.AreaName);
             Assert.Equal(VATKind.Special, result.Category);
             Assert.Equal(2015, result.Year);
             Assert.Equal(1, result.Batch);

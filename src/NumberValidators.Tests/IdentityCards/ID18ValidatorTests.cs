@@ -1,4 +1,4 @@
-using NumberValidators.IdentityCards;
+ï»¿using NumberValidators.IdentityCards;
 using NumberValidators.IdentityCards.Validators;
 using System;
 using Xunit;
@@ -62,8 +62,8 @@ namespace NumberValidators.Tests.IdentityCards
             Assert.Equal(320219, result.AreaNumber);
             Assert.Equal(003, result.Sequence);
             Assert.Equal('X', result.CheckBit);
-            Assert.Equal("½­ËÕÊ¡ÎŞÎıÊĞ", result.RecognizableArea.FullName);
-            Assert.Equal("½­ËÕÊ¡", result.RecognizableArea.Parent.Name);
+            Assert.Equal("æ±Ÿè‹çœæ— é”¡å¸‚", result.RecognizableArea.FullName);
+            Assert.Equal("æ±Ÿè‹çœ", result.RecognizableArea.Parent.Name);
         }
     }
 }
