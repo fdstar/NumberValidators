@@ -29,7 +29,7 @@ valid = IDValidatorHelper.Validate(idNumber, ignoreCheckBit: false); //无法确
 ```
 
 ### 2、增值税发票
-默认提供`VATCode10Validator`（增值税专用发票、增值税普通发票、货物运输业增值税专用发票）以及`VATCode12Validator`（增值税普通发票[卷票]、增值税电子普通发票、区块链发票、增值税电子发票）两种长度的增值税发票验证（货物运输业增值税专用发票按国家规定目前已停用），具体使用代码如下：
+默认提供`VATCode10Validator`（增值税专用发票、增值税普通发票、货物运输业增值税专用发票）以及`VATCode12Validator`（增值税普通发票[卷票]、增值税电子普通发票、区块链发票、增值税电子专用发票）两种长度的增值税发票验证（货物运输业增值税专用发票按国家规定目前已停用），具体使用代码如下：
 ```csharp
 valid = new VATCode10Validator().Validate(vatCode); //增值税专用发票、增值税普通发票、货物运输业增值税专用发票验证
 valid = new VATCode12Validator().Validate(vatCode); //增值税普通发票[卷票]、增值税电子普通发票验证
